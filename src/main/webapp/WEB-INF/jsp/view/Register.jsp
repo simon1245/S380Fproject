@@ -1,16 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Customer Support</title>
+        <title>Food Ordering System</title>
     </head>
     <body>
-        <%--
-    <c:url var="logoutUrl" value="/logout"/>
-    <form action="${logoutUrl}" method="post">
-        <input type="submit" value="Log out" />
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-    </form>
-        --%>
+        <h3>If you already have a account, click <a href="<c:url value="/login" />">here</a> to log in!</h3>
         <h2>Register</h2>
         <form:form method="POST" enctype="multipart/form-data"
                    modelAttribute="webUser">
@@ -22,7 +16,7 @@
             <form:checkbox path="roles" value="ROLE_USER" />ROLE_USER
             <form:checkbox path="roles" value="ROLE_ADMIN" />ROLE_ADMIN
             <br /><br />
-            <input type="submit" value="Add User"/>
+            <input type="submit" value="Register"/>
         </form:form>
     </body>
 </html>

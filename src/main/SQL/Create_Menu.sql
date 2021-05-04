@@ -1,3 +1,8 @@
+Drop table Attachment;
+Drop table Foods;
+
+
+
 CREATE TABLE Foods (
     food_id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
     name VARCHAR(255) NOT NULL,
@@ -9,7 +14,7 @@ CREATE TABLE Foods (
 
 INSERT INTO Foods(name,description,available,price) VALUES ('aaa', 'Tast good',true,1111);
 
-CREATE TABLE Menu_attachment (
+CREATE TABLE Attachment (
     id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
     filename VARCHAR(255) DEFAULT NULL,
     content_type VARCHAR(255) DEFAULT NULL,

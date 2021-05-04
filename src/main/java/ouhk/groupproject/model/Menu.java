@@ -22,7 +22,7 @@ public class Menu {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int food_id;
+    private long food_id;
 
     @Column(name = "name")
     private String name;
@@ -33,9 +33,9 @@ public class Menu {
     @OneToMany(mappedBy = "menu", fetch = FetchType.EAGER,
             cascade = CascadeType.ALL, orphanRemoval = true)
     @Fetch(FetchMode.SUBSELECT)
-    private List<Menu_Attachment> Menu_attachments = new ArrayList<>();
+    private List<Attachment> attachments = new ArrayList<>();
 
-    public int getFood_id() {
+    public long getFood_id() {
         return food_id;
     }
 
@@ -50,9 +50,7 @@ public class Menu {
     public void setName(String name) {
         this.name = name;
     }
-
-
-
+    
     public String getDescription() {
         return description;
     }
@@ -77,17 +75,18 @@ public class Menu {
         this.available = available;
     }
 
-    public List<Menu_Attachment> getMenu_attachments() {
-        return Menu_attachments;
+    public List<Attachment> getAttachments() {
+        return attachments;
     }
 
-    public void setMenu_attachments(List<Menu_Attachment> Menu_attachments) {
-        this.Menu_attachments = Menu_attachments;
+    public void setAttachments(List<Attachment> attachments) {
+        this.attachments = attachments;
     }
 
-    public void deleteAttachment(Menu_Attachment attachment) {
+
+    public void deleteAttachment(Attachment attachment) {
         attachment.setMenu(null);
-        this.Menu_attachments.remove(attachment);
+        this.attachments.remove(attachment);
     }
     
     

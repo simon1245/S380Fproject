@@ -21,5 +21,6 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <input type="submit" value="Log In"/>
         </form>
+        <a href="<c:url value="/menu" />">Return to Menu List</a>
     </body>
 </html>

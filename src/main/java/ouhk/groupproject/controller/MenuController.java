@@ -2,7 +2,10 @@ package ouhk.groupproject.controller;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -11,9 +14,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
+import org.springframework.web.servlet.view.RedirectView;
+import ouhk.groupproject.exception.AttachmentNotFound;
+import ouhk.groupproject.exception.MenuNotFound;
+import ouhk.groupproject.model.Attachment;
 import ouhk.groupproject.model.Menu;
+import ouhk.groupproject.model.Base64image;
 import ouhk.groupproject.service.MenuService;
-import ouhk.groupproject.service.Menu_AttachmentService;
+import ouhk.groupproject.service.AttachmentService;
+import ouhk.groupproject.view.DownloadingView;
 
 @Controller
 @RequestMapping("/menu")
@@ -21,29 +32,44 @@ public class MenuController {
 
     @Autowired
     private MenuService menuService;
-    /*
+
     @Autowired
-    private Menu_AttachmentService menu_attachmentService;
-    */
-    @GetMapping({"", "/list"})
+    private AttachmentService attachmentService;
+
+    @GetMapping("")
     public String list(ModelMap model) {
+        List<Attachment> attachments = attachmentService.getAttachments();
+        List<Base64image> images = new ArrayList<Base64image>();
+        for (Attachment attachment : attachments) {
+            
+            String decoded = Base64.getEncoder().encodeToString(attachment.getContents());
+            
+            System.out.println("Test11111");
+            System.out.println(decoded);
+            System.out.println("Test11111");
+
+            Base64image image = new Base64image();
+            image.setFood_id(attachment.getFood_id());
+            image.setBase64img(decoded);
+            images.add(image);
+        }
         model.addAttribute("menus", menuService.getMenus());
+        model.addAttribute("images", images);
         return "menu";
     }
 
-    /*
     @GetMapping("/create")
     public ModelAndView create() {
-        return new ModelAndView("add", "MenuForm", new Form());
+        return new ModelAndView("create", "MenuForm", new Form());
     }
-     */
+
     public static class Form {
 
         private String foodname;
         private String description;
         private Integer price;
         private Boolean available;
-        private List<MultipartFile> menu_attachments;
+        private List<MultipartFile> attachments;
 
         public java.lang.String getFoodname() {
             return foodname;
@@ -77,18 +103,18 @@ public class MenuController {
             this.available = available;
         }
 
-        public List<MultipartFile> getMenu_attachments() {
-            return menu_attachments;
+        public List<MultipartFile> getAttachments() {
+            return attachments;
         }
 
-        public void setMenu_attachments(List<MultipartFile> menu_attachments) {
-            this.menu_attachments = menu_attachments;
+        public void setAttachments(List<MultipartFile> attachments) {
+            this.attachments = attachments;
         }
     }
 
     @PostMapping("/create")
     public String create(Form form, Principal principal) throws IOException {
-        long food_Id = menuService.createMenu(form.getFoodname(), form.getDescription(), form.getPrice(), form.getAvailable(), form.getMenu_attachments());
+        long food_Id = menuService.createMenu(form.getFoodname(), form.getDescription(), form.getPrice(), form.getAvailable(), form.getAttachments());
         return "redirect:/menu/view/" + food_Id;
     }
 
@@ -97,73 +123,72 @@ public class MenuController {
             ModelMap model) {
         Menu menu = menuService.getMenu(food_Id);
         if (menu == null) {
-            return "redirect:/menu/list";
+            return "redirect:/menu";
         }
         model.addAttribute("menu", menu);
         return "view";
     }
-    /*
-    @GetMapping("/{ticketId}/attachment/{attachment:.+}")
-    public View download(@PathVariable("ticketId") long ticketId,
+
+    @GetMapping("/view/{food_Id}/attachment/{attachment:.+}")
+    public View download(@PathVariable("food_Id") long food_Id,
             @PathVariable("attachment") String name) {
 
-        Attachment attachment = attachmentService.getAttachment(ticketId, name);
+        Attachment attachment = attachmentService.getAttachment(food_Id, name);
         if (attachment != null) {
             return new DownloadingView(attachment.getName(),
                     attachment.getMimeContentType(), attachment.getContents());
         }
-        return new RedirectView("/ticket/list", true);
+        return new RedirectView("/menu/", true);
     }
 
-    @GetMapping("/{ticketId}/delete/{attachment:.+}")
-    public String deleteAttachment(@PathVariable("ticketId") long ticketId,
+    @GetMapping("/{food_Id}/delete/{attachment:.+}")
+    public String deleteAttachment(@PathVariable("food_Id") long food_Id,
             @PathVariable("attachment") String name) throws AttachmentNotFound {
-        ticketService.deleteAttachment(ticketId, name);
-        return "redirect:/ticket/edit/" + ticketId;
+        menuService.deleteAttachment(food_Id, name);
+        return "redirect:/menu/edit/" + food_Id;
     }
 
-    @GetMapping("/edit/{ticketId}")
-    public ModelAndView showEdit(@PathVariable("ticketId") long ticketId,
+    @GetMapping("/edit/{food_Id}")
+    public ModelAndView showEdit(@PathVariable("food_Id") long food_Id,
             Principal principal, HttpServletRequest request) {
-        Ticket ticket = ticketService.getTicket(ticketId);
-        if (ticket == null
-                || (!request.isUserInRole("ROLE_ADMIN")
-                && !principal.getName().equals(ticket.getCustomerName()))) {
-            return new ModelAndView(new RedirectView("/ticket/list", true));
+        Menu menu = menuService.getMenu(food_Id);
+        if (menu == null
+                || (!request.isUserInRole("ROLE_ADMIN"))) {
+            return new ModelAndView(new RedirectView("/menu", true));
         }
 
         ModelAndView modelAndView = new ModelAndView("edit");
-        modelAndView.addObject("ticket", ticket);
+        modelAndView.addObject("menu", menu);
 
-        Form ticketForm = new Form();
-        ticketForm.setSubject(ticket.getSubject());
-        ticketForm.setBody(ticket.getBody());
-        modelAndView.addObject("ticketForm", ticketForm);
+        Form menuForm = new Form();
+        menuForm.setFoodname(menu.getName());
+        menuForm.setDescription(menu.getDescription());
+        menuForm.setPrice(menu.getPrice());
+        menuForm.setAvailable(menu.getAvailable());
+
+        modelAndView.addObject("MenuForm", menuForm);
 
         return modelAndView;
     }
 
-    @PostMapping("/edit/{ticketId}")
-    public String edit(@PathVariable("ticketId") long ticketId, Form form,
+    @PostMapping("/edit/{food_Id}")
+    public String edit(@PathVariable("food_Id") long food_Id, Form form,
             Principal principal, HttpServletRequest request)
-            throws IOException, TicketNotFound {
-        Ticket ticket = ticketService.getTicket(ticketId);
-        if (ticket == null
-                || (!request.isUserInRole("ROLE_ADMIN")
-                && !principal.getName().equals(ticket.getCustomerName()))) {
-            return "redirect:/ticket/list";
+            throws IOException, MenuNotFound {
+        Menu menu = menuService.getMenu(food_Id);
+        if (menu == null
+                || (!request.isUserInRole("ROLE_ADMIN"))) {
+            return "redirect:/menu";
         }
 
-        ticketService.updateTicket(ticketId, form.getSubject(),
-                form.getBody(), form.getAttachments());
-        return "redirect:/ticket/view/" + ticketId;
+        menuService.updateMenu(food_Id, form.getFoodname(), form.getDescription(), form.getPrice(), form.getAvailable(), form.getAttachments());
+        return "redirect:/food_Id/view/" + food_Id;
     }
 
-    @GetMapping("/delete/{ticketId}")
-    public String deleteTicket(@PathVariable("ticketId") long ticketId)
-            throws TicketNotFound {
-        ticketService.delete(ticketId);
-        return "redirect:/ticket/list";
+    @GetMapping("/delete/{food_Id}")
+    public String deleteMenu(@PathVariable("food_Id") long food_Id)
+            throws MenuNotFound {
+        menuService.delete(food_Id);
+        return "redirect:/menu";
     }
-     */
 }

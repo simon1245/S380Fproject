@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html>
     <body>
-        <%--
-        <c:url var="logoutUrl" value="/logout"/>
-        <form action="${logoutUrl}" method="post">
-            <input type="submit" value="Log out" />
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-        </form>
-        --%>
+        <c:choose>
+            <c:when test="${pageContext.request.userPrincipal.name != null}">
+                <c:url var="logoutUrl" value="/logout"/>
+                <form action="${logoutUrl}" method="post">
+                    <input type="submit" value="Log out" />
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                </form>
+            </c:when>
+            <c:otherwise>
+                <a href="<c:url value="/login" />">Login</a>
+            </c:otherwise>
+        </c:choose>
         <br /><br />
         <h2>Food Menu</h2>
-        <a href="<c:url value="/user/create" />">Create a Menu</a><br /><br />
-        --%>
+        <a href="<c:url value="/menu/create" />">Create a Menu</a><br /><br />
         <c:choose>
             <c:when test="${fn:length(menus) == 0}">
                 <i>There are no Menu in the system.</i>
@@ -19,14 +23,34 @@
             <c:otherwise>
                 <table>
                     <tr>
-                        <th>Username</th><th>Password</th><th>Roles</th><th>Action</th>
+                        <th>Food Sample</th>
+                        <th>Food Name</th>
+                        <th>Price</th>
+                        <th>Available?</th>
+                        <th>    </th>
                     </tr>
                     <c:forEach items="${menus}" var="menu">
                         <tr>
+                            <c:set var= "count" value= "0" />
+                            <c:forEach items="${images}" var="image">
+                                <c:if test="${count==0}">
+                                    <c:if test="${image.food_id == menu.food_id}">
+
+                                        <td>
+                                            <img src="data:image/jpg;base64,${image.base64img}" alt="No image" height="50" width="50"/>
+                                        </td>
+                                        <c:set var= "count" value= "1" />
+                                    </c:if>
+                                </c:if>
+                            </c:forEach>
+                            <c:if test="${count==0}"> 
+                                <td><img src=""  height="50" width="50"/> </td>
+                            </c:if>    
+
                             <td>${menu.name}</td>
-                            <td>${menu.description}</td>
                             <td>${menu.price}</td>
                             <td>${menu.available}</td>
+                            <td><a href="<c:url value="/menu/view/${menu.food_id}" />">View More...</a><br /><br /></td>
                         </tr>
                     </c:forEach>
                 </table>

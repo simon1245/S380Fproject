@@ -13,7 +13,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Menu_Attachment implements Serializable {
+public class Attachment implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +30,7 @@ public class Menu_Attachment implements Serializable {
     @Lob
     private byte[] contents;
 
+            
     @Column(name = "food_id", insertable = false, updatable = false)
     private long foodid;
 
@@ -68,6 +69,7 @@ public class Menu_Attachment implements Serializable {
     public void setContents(byte[] contents) {
         this.contents = contents;
     }
+
 
     public long getFood_id() {
         return foodid;

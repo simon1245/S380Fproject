@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <html>
     <body>
-        <%--
-        <c:url var="logoutUrl" value="/logout"/>
-        <form action="${logoutUrl}" method="post">
-            <input type="submit" value="Log out" />
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-        </form>
-        --%>
+
+        <c:choose>
+            <c:when test="${param.logout != null}">
+                <c:url var="logoutUrl" value="/logout"/>
+                <form action="${logoutUrl}" method="post">
+                    <input type="submit" value="Log out" />
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                </form>
+            </c:when>
+            <c:otherwise>
+                <a href="<c:url value="/login" />">Login</a>
+            </c:otherwise>
+        </c:choose>
+
         <h2>Users Management</h2>
         <a href="<c:url value="/user/Register" />">Create a User</a><br /><br />
         <c:choose>
