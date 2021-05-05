@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name = "users")
@@ -22,6 +24,7 @@ public class WebUser implements Serializable {
           cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserRole> roles = new ArrayList<>();
 
+    
     public WebUser() {}
 
     public WebUser(String username, String password, String[] roles) {
@@ -55,5 +58,5 @@ public class WebUser implements Serializable {
 
     public void setRoles(List<UserRole> roles) {
         this.roles = roles;
-    }
+    }    
 }

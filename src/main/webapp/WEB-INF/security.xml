@@ -26,10 +26,17 @@
     </b:bean> 
     
     <http auto-config="true">
-        <!--
-    <intercept-url pattern="/ticket/delete/**" access="hasRole('ADMIN')" /> 
-    <intercept-url pattern="/ticket/**" access="hasAnyRole('USER','ADMIN')" />
-        -->
+        
+        <intercept-url pattern="/menu/create/**" access="hasRole('ADMIN')" /> 
+        <intercept-url pattern="/menu/delete/**" access="hasRole('ADMIN')" /> 
+        <intercept-url pattern="/menu/edit/**" access="hasRole('ADMIN')" /> 
+        <intercept-url pattern="/menu/addtoCart/**" access="hasRole('USER') or hasRole('ADMIN') " /> 
+        <intercept-url pattern="/menu/emptycart/**" access="hasRole('USER' )or hasRole('ADMIN') " /> 
+        <intercept-url pattern="/menu/viewcart/**" access="hasRole('USER') or hasRole('ADMIN') " /> 
+        <intercept-url pattern="/menu/make_comment/**" access="hasRole('USER') or hasRole('ADMIN') " /> 
+        <intercept-url pattern="/user/manage/**" access="hasRole('ADMIN')" /> 
+        <intercept-url pattern="/user/delete/**" access="hasRole('ADMIN')" /> 
+        
         <form-login login-page="/login" authentication-failure-url="/login?error" />
         <logout logout-success-url="/login?logout"
                 invalidate-session="true"

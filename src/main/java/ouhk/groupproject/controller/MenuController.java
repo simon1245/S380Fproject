@@ -27,8 +27,10 @@ import ouhk.groupproject.exception.MenuNotFound;
 import ouhk.groupproject.model.Attachment;
 import ouhk.groupproject.model.Menu;
 import ouhk.groupproject.model.Base64image;
+import ouhk.groupproject.model.Comment;
 import ouhk.groupproject.service.MenuService;
 import ouhk.groupproject.service.AttachmentService;
+import ouhk.groupproject.service.CommentService;
 import ouhk.groupproject.view.DownloadingView;
 
 @Controller
@@ -37,6 +39,9 @@ public class MenuController {
 
     @Autowired
     private MenuService menuService;
+
+    @Autowired
+    private CommentService commentService;
 
     @Autowired
     private AttachmentService attachmentService;
@@ -126,6 +131,20 @@ public class MenuController {
         if (menu == null) {
             return "redirect:/menu";
         }
+        
+        List<Attachment> attachments = attachmentService.getAttachments();
+        List<Base64image> images = new ArrayList<Base64image>();
+        for (Attachment attachment : attachments) {
+            String decoded = Base64.getEncoder().encodeToString(attachment.getContents());
+            Base64image image = new Base64image();
+            image.setFood_id(attachment.getFood_id());
+            image.setBase64img(decoded);
+            images.add(image);
+        }
+        model.addAttribute("images", images);
+        
+        List<Comment> comments = commentService.getComment(food_Id);
+        model.addAttribute("comments", comments);
         model.addAttribute("menu", menu);
         return "view";
     }
@@ -142,7 +161,7 @@ public class MenuController {
         return new RedirectView("/menu/", true);
     }
 
-    @GetMapping("/{food_Id}/delete/{attachment:.+}")
+    @GetMapping("/delete/{food_Id}/{attachment:.+}")
     public String deleteAttachment(@PathVariable("food_Id") long food_Id,
             @PathVariable("attachment") String name) throws AttachmentNotFound {
         menuService.deleteAttachment(food_Id, name);
@@ -183,7 +202,7 @@ public class MenuController {
         }
 
         menuService.updateMenu(food_Id, form.getFoodname(), form.getDescription(), form.getPrice(), form.getAvailable(), form.getAttachments());
-        return "redirect:/food_Id/view/" + food_Id;
+        return "redirect:/menu/view/" + food_Id;
     }
 
     @GetMapping("/delete/{food_Id}")
@@ -223,9 +242,7 @@ public class MenuController {
     @GetMapping("/emptycart")
     private String emptycart(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("aaa");
         request.getSession().removeAttribute("carts");
-        System.out.println("aaaa");
         return "redirect:/menu/";
     }
 
@@ -233,6 +250,33 @@ public class MenuController {
     public String viewcart(ModelMap model) {
         model.addAttribute("menus", menuService.getMenus());
         return ("viewcart");
+    }
+
+    public static class CommentForm {
+
+        private String detail;
+
+        public String getDetail() {
+            return detail;
+        }
+
+        public void setDetail(String detail) {
+            this.detail = detail;
+        }
+
+    }
+
+    @GetMapping("/make_comment/{food_Id}")
+    public ModelAndView make_comment(@PathVariable("food_Id") long food_Id, ModelMap model) {
+        model.addAttribute("menu", menuService.getMenu(food_Id));
+        return new ModelAndView("make_comment", "CommentForm", new CommentForm());
+    }
+
+    @PostMapping("/make_comment/{food_Id}")
+    public String make_comment(CommentForm commentForm, Principal principal, @PathVariable("food_Id") long food_Id) throws IOException {
+        long Commentid = commentService.createComment(principal.getName(),
+                commentForm.getDetail(), food_Id);
+        return "redirect:/menu/view/" + food_Id;
     }
 
 }

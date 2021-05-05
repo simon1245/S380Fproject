@@ -15,7 +15,6 @@ import org.apache.derby.client.am.Decimal;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-
 @Entity
 @Table(name = "Foods")
 public class Menu {
@@ -29,11 +28,16 @@ public class Menu {
     private String description;
     private Integer price;
     private Boolean available;
-    
+
     @OneToMany(mappedBy = "menu", fetch = FetchType.EAGER,
             cascade = CascadeType.ALL, orphanRemoval = true)
     @Fetch(FetchMode.SUBSELECT)
     private List<Attachment> attachments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "menu", fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL, orphanRemoval = true)
+    @Fetch(FetchMode.SUBSELECT)
+    private List<Comment> comments = new ArrayList<>();
 
     public long getFood_id() {
         return food_id;
@@ -50,7 +54,7 @@ public class Menu {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public String getDescription() {
         return description;
     }
@@ -83,12 +87,18 @@ public class Menu {
         this.attachments = attachments;
     }
 
-
     public void deleteAttachment(Attachment attachment) {
         attachment.setMenu(null);
         this.attachments.remove(attachment);
     }
-    
-    
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
     
 }

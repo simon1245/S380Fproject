@@ -3,7 +3,7 @@
     <body>
 
         <c:choose>
-            <c:when test="${param.logout != null}">
+            <c:when test="${pageContext.request.userPrincipal.name != null}">
                 <c:url var="logoutUrl" value="/logout"/>
                 <form action="${logoutUrl}" method="post">
                     <input type="submit" value="Log out" />

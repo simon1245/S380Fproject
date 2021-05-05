@@ -3,6 +3,9 @@
     <body>
         <c:choose>
             <c:when test="${pageContext.request.userPrincipal.name != null}">
+                <security:authorize access="hasRole('ADMIN')">
+                    [<a href="<c:url value="/user/manage" />">Manage User Account</a>]
+                </security:authorize>
                 <c:url var="logoutUrl" value="/logout"/>
                 <form action="${logoutUrl}" method="post">
                     <input type="submit" value="Log out" />
@@ -12,12 +15,18 @@
             <c:otherwise>
                 <a href="<c:url value="/login" />">Login</a>
             </c:otherwise>
+
+
+
         </c:choose>
         <br /><br />
-        <h2>Food Menu</h2>
-        <a href="<c:url value="/menu/create" />">Create a Menu</a><br /><br />
-        <c:choose>
-            <c:when test="${fn:length(menus) == 0}">
+        <h1>Food Menu</h1>
+        <security:authorize access="hasRole('ADMIN')">
+            <a href="<c:url value="/menu/create" />">Create a Menu</a><br /><br />
+        </security:authorize>
+        <h2><a href="<c:url value="/menu/viewcart"/>">View Your Shopping Cart!</a><br><br></h2>
+            <c:choose>
+                <c:when test="${fn:length(menus) == 0}">
                 <i>There are no Menu in the system.</i>
             </c:when>
             <c:otherwise>
