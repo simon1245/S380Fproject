@@ -79,6 +79,6 @@ public class WebUserController {
     @GetMapping("/delete/{username}")
     public View deleteTicket(@PathVariable("username") String username) {
         webUserRepo.delete(webUserRepo.findById(username).orElse(null));
-        return new RedirectView("/user/list", true);
+        return new RedirectView("/user/manage", true);
     }
 }

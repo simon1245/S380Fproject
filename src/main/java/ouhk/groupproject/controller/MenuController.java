@@ -131,18 +131,21 @@ public class MenuController {
         if (menu == null) {
             return "redirect:/menu";
         }
-        
+
         List<Attachment> attachments = attachmentService.getAttachments();
         List<Base64image> images = new ArrayList<Base64image>();
         for (Attachment attachment : attachments) {
-            String decoded = Base64.getEncoder().encodeToString(attachment.getContents());
-            Base64image image = new Base64image();
-            image.setFood_id(attachment.getFood_id());
-            image.setBase64img(decoded);
-            images.add(image);
+            if (attachment.getFood_id() == menu.getFood_id()) {
+                String decoded = Base64.getEncoder().encodeToString(attachment.getContents());
+                Base64image image = new Base64image();
+                image.setFood_id(attachment.getFood_id());
+                image.setBase64img(decoded);
+                images.add(image);
+            }
+
         }
         model.addAttribute("images", images);
-        
+
         List<Comment> comments = commentService.getComment(food_Id);
         model.addAttribute("comments", comments);
         model.addAttribute("menu", menu);
