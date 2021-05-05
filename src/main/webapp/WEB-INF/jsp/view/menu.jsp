@@ -45,12 +45,17 @@
                             </c:forEach>
                             <c:if test="${count==0}"> 
                                 <td><img src=""  height="50" width="50"/> </td>
-                            </c:if>    
+                                </c:if>    
 
                             <td>${menu.name}</td>
                             <td>${menu.price}</td>
                             <td>${menu.available}</td>
-                            <td><a href="<c:url value="/menu/view/${menu.food_id}" />">View More...</a><br /><br /></td>
+                            <td><a href="<c:url value="/menu/view/${menu.food_id}" />">View More...</a><br />
+                                <a href="<c:url value="/menu/addtoCart">
+                                       <c:param name="food_Id" value="${menu.food_id}" />
+                                   </c:url>">Add to cart</a>
+                                <br/>
+                            </td>
                         </tr>
                     </c:forEach>
                 </table>

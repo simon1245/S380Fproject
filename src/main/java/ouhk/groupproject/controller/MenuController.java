@@ -4,8 +4,13 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -41,12 +46,8 @@ public class MenuController {
         List<Attachment> attachments = attachmentService.getAttachments();
         List<Base64image> images = new ArrayList<Base64image>();
         for (Attachment attachment : attachments) {
-            
+
             String decoded = Base64.getEncoder().encodeToString(attachment.getContents());
-            
-            System.out.println("Test11111");
-            System.out.println(decoded);
-            System.out.println("Test11111");
 
             Base64image image = new Base64image();
             image.setFood_id(attachment.getFood_id());
@@ -191,4 +192,47 @@ public class MenuController {
         menuService.delete(food_Id);
         return "redirect:/menu";
     }
+
+    @GetMapping("/addtoCart")
+    public String addtoCart(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int food_Id;
+
+        try {
+            food_Id = Integer.parseInt(request.getParameter("food_Id"));
+        } catch (Exception e) {
+            response.sendRedirect("menu");
+            return "redirect:/menu/";
+        }
+
+        HttpSession session = request.getSession();
+        if (session.getAttribute("carts") == null) {
+            session.setAttribute("carts", new Hashtable<>());
+        }
+
+        @SuppressWarnings("unchecked")
+        Map<Integer, Integer> carts
+                = (Map<Integer, Integer>) session.getAttribute("carts");
+        if (!carts.containsKey(food_Id)) {
+            carts.put(food_Id, 0);
+        }
+        carts.put(food_Id, carts.get(food_Id) + 1);
+
+        return "redirect:/menu/viewcart/";
+    }
+
+    @GetMapping("/emptycart")
+    private String emptycart(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        System.out.println("aaa");
+        request.getSession().removeAttribute("carts");
+        System.out.println("aaaa");
+        return "redirect:/menu/";
+    }
+
+    @GetMapping("/viewcart")
+    public String viewcart(ModelMap model) {
+        model.addAttribute("menus", menuService.getMenus());
+        return ("viewcart");
+    }
+
 }
