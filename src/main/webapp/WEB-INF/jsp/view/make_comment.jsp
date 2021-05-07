@@ -28,11 +28,11 @@
                         </form>
                         <security:authorize access="hasRole('USER') or hasRole('ADMIN')">
                             <a href="<c:url value="/user/edit/${pageContext.request.userPrincipal.name}" />"class="w3-bar-item w3-button w3-right w3-medium"><u>${pageContext.request.userPrincipal.name}</u></a>
-                        </security:authorize>
+                                </security:authorize>
+                        <a href="<c:url value="/menu/viewcart" />" class="w3-bar-item w3-button w3-right w3-medium"><fmt:message key='viewCart'/></a>
                         <security:authorize access="hasRole('ADMIN')">
                             <a href="<c:url value="/user/manage" />"class="w3-bar-item w3-button w3-right w3-medium"><fmt:message key='manageUser'/></a>
                         </security:authorize>
-                        <a href="<c:url value="/menu/viewcart" />" class="w3-bar-item w3-button w3-right w3-medium"><fmt:message key='viewCart'/></a>
                     </c:when>
                     <c:otherwise>
                         <a href="<c:url value="/login" />" class="w3-right w3-button w3-medium"><fmt:message key='login'/></a>

@@ -28,11 +28,11 @@
                         </form>
                         <security:authorize access="hasRole('USER') or hasRole('ADMIN')">
                             <a href="<c:url value="/user/edit/${pageContext.request.userPrincipal.name}" />"class="w3-bar-item w3-button w3-right w3-medium"><u>${pageContext.request.userPrincipal.name}</u></a>
-                        </security:authorize>
+                                </security:authorize>
+                        <a href="<c:url value="/menu/viewcart" />" class="w3-bar-item w3-button w3-right w3-medium"><fmt:message key='viewCart'/></a>
                         <security:authorize access="hasRole('ADMIN')">
                             <a href="<c:url value="/user/manage" />"class="w3-bar-item w3-button w3-right w3-medium"><fmt:message key='manageUser'/></a>
                         </security:authorize>
-                        <a href="<c:url value="/menu/viewcart" />" class="w3-bar-item w3-button w3-right w3-medium"><fmt:message key='manage.viewCart'/></a>
                     </c:when>
                     <c:otherwise>
                         <a href="<c:url value="/login" />" class="w3-right w3-button w3-medium"><fmt:message key='login'/></a>
@@ -101,7 +101,10 @@
                                     </td>
                                     <td>
                                         <a href="<c:url value="/user/edit/${user.username}" />" class="w3-btn w3-dark-grey w3-round-large w3-center"><fmt:message key='manage.edit'/></a>
-                                        <a href="<c:url value="/user/delete/${user.username}" />" class="w3-btn w3-dark-grey w3-round-large w3-center"><fmt:message key='manage.delete'/></a>
+                                        <c:if test="${pageContext.request.userPrincipal.name != user.username}">
+                                            <a href="<c:url value="/user/delete/${user.username}" />" class="w3-btn w3-dark-grey w3-round-large w3-center"><fmt:message key='manage.delete'/></a>
+                                        </c:if>
+
                                     </td>
                                 </tr>
                             </c:forEach>
