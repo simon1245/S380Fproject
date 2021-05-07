@@ -26,6 +26,9 @@
                             <input type="submit" value="<fmt:message key='logOutButton'/>" class="w3-bar-item w3-button w3-right w3-dark-grey w3-opacity w3-medium" />
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
+                        <security:authorize access="hasRole('USER') or hasRole('ADMIN')">
+                            <a href="<c:url value="/user/edit/${pageContext.request.userPrincipal.name}" />"class="w3-bar-item w3-button w3-right w3-medium"><u>${pageContext.request.userPrincipal.name}</u></a>
+                        </security:authorize>
                         <security:authorize access="hasRole('ADMIN')">
                             <a href="<c:url value="/user/manage" />"class="w3-bar-item w3-button w3-right w3-medium"><fmt:message key='manageUser'/></a>
                         </security:authorize>
@@ -53,8 +56,8 @@
         <!-- content-->
         <div class="w3-container w3-white w3-padding-64 w3-large">
             <div class="w3-content">
-                
-                
+
+
                 <c:choose>
 
                     <c:when test = "${language == 'en_US'}">  
@@ -66,8 +69,8 @@
                     </c:when>
 
                 </c:choose>
-                
-                
+
+
                 <div class="w3-row  w3-border w3-border-brown w3-container w3-padding-16">
                     <form:form method="POST" enctype="multipart/form-data"
                                modelAttribute="CommentForm">

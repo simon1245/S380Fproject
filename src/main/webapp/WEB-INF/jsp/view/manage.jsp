@@ -26,8 +26,11 @@
                             <input type="submit" value="<fmt:message key='logOutButton'/>" class="w3-bar-item w3-button w3-right w3-dark-grey w3-opacity w3-medium" />
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
+                        <security:authorize access="hasRole('USER') or hasRole('ADMIN')">
+                            <a href="<c:url value="/user/edit/${pageContext.request.userPrincipal.name}" />"class="w3-bar-item w3-button w3-right w3-medium"><u>${pageContext.request.userPrincipal.name}</u></a>
+                        </security:authorize>
                         <security:authorize access="hasRole('ADMIN')">
-                            <a href="<c:url value="/user/manage" />"class="w3-bar-item w3-button w3-right w3-medium"><fmt:message key='manage.manageUser'/></a>
+                            <a href="<c:url value="/user/manage" />"class="w3-bar-item w3-button w3-right w3-medium"><fmt:message key='manageUser'/></a>
                         </security:authorize>
                         <a href="<c:url value="/menu/viewcart" />" class="w3-bar-item w3-button w3-right w3-medium"><fmt:message key='manage.viewCart'/></a>
                     </c:when>
@@ -58,7 +61,6 @@
             <p><a href="<c:url value="/menu/#menu" />" class="w3-button w3-large w3-black"><fmt:message key='menu.letMeSee'/></a></p>
         </div>
     </header>
-
 
     <!-- content-->
     <div class=""w3-container w3-white w3-padding-64 w3-large" id="create" >
@@ -98,6 +100,7 @@
                                         </c:forEach>
                                     </td>
                                     <td>
+                                        <a href="<c:url value="/user/edit/${user.username}" />" class="w3-btn w3-dark-grey w3-round-large w3-center"><fmt:message key='manage.edit'/></a>
                                         <a href="<c:url value="/user/delete/${user.username}" />" class="w3-btn w3-dark-grey w3-round-large w3-center"><fmt:message key='manage.delete'/></a>
                                     </td>
                                 </tr>
