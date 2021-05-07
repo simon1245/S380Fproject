@@ -94,5 +94,7 @@
                 </div>
                 <br>
                 <a href="<c:url value="/menu" />" class="w3-btn w3-light-grey w3-right w3-round-large" ><fmt:message key='backToMenuList'/></a>
-            </div></div>
+            </div>
+        </div>
+    </body>
 </html>

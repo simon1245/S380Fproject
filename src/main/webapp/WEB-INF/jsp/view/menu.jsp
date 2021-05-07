@@ -65,71 +65,71 @@
             <h1 class="w3-text-black"><fmt:message key='menu.orderingSys'/></h1>
             <br>
             <p><a href="#menu" class="w3-button w3-large w3-black"><fmt:message key='menu.letMeSee'/></a></p>
-        </div>
-    </header>
+        </header>
 
-    <!-- Menu Container -->
-    <div class="w3-container w3-white w3-padding-64 w3-large" id="menu">
-        <div class="w3-content">
-            <h1 class="w3-center w3-xxxlarge w3-text-brown" style="margin-bottom:64px"><fmt:message key='menu.menuName'/></h1>
-            <div class="w3-row w3-center w3-border w3-border-brown ">
-                <security:authorize access="hasRole('ADMIN')">
-                    <a href="<c:url value="/menu/create" />" class="w3-right w3-btn w3-dark-grey w3-round-large w3-medium" style=" margin: 10px;"><fmt:message key='menu.description'/></a>
-                </security:authorize>
-                <a href="<c:url value="/menu/viewcart"/>" class="w3-right w3-btn w3-round-large w3-medium" style="background-color:#cbbeb5; margin: 10px;"><fmt:message key='menu.viewCart'/></a><br><br>
-                <c:choose>
-                    <c:when test="${fn:length(menus) == 0}">
-                        <h3 class="w3-center"><fmt:message key='menu.noMenu'/></h3>
-                    </c:when>
-                    <c:otherwise>
-                        <c:forEach items="${menus}" var="menu" varStatus="loop">
-                            <c:if test="${(loop.index) ==0 || (loop.index)%4==0}">
-                                <div class="w3-row-padding w3-padding-16 w3-center">
-                                    <c:set var= "close" value= "${loop.index+3}" />
-                                </c:if>
-                                <div class="w3-quarter w3-cell">
-                                    <c:set var= "count" value= "0" />
-                                    <c:forEach items="${images}" var="image">
-                                        <c:if test="${count==0}">
-                                            <c:if test="${image.food_id == menu.food_id}">
-                                                <img src="data:image/jpg;base64,${image.base64img}" alt="No image" style="width:85%"/>
-                                                <c:set var= "count" value= "1" />
-                                            </c:if>
-                                        </c:if>
-                                    </c:forEach>
-                                    <c:if test="${count==0}"> 
-                                        <img src=""  style="width:85%">
+        <!-- Menu Container -->
+        <div class="w3-container w3-white w3-padding-64 w3-large" id="menu">
+            <div class="w3-content">
+                <h1 class="w3-center w3-xxxlarge w3-text-brown" style="margin-bottom:64px"><fmt:message key='menu.menuName'/></h1>
+                <div class="w3-row w3-center w3-border w3-border-brown ">
+                    <security:authorize access="hasRole('ADMIN')">
+                        <a href="<c:url value="/menu/create" />" class="w3-right w3-btn w3-dark-grey w3-round-large w3-medium" style=" margin: 10px;"><fmt:message key='menu.description'/></a>
+                    </security:authorize>
+                    <a href="<c:url value="/menu/viewcart"/>" class="w3-right w3-btn w3-round-large w3-medium" style="background-color:#cbbeb5; margin: 10px;"><fmt:message key='menu.viewCart'/></a><br><br>
+                    <c:choose>
+                        <c:when test="${fn:length(menus) == 0}">
+                            <h3 class="w3-center"><fmt:message key='menu.noMenu'/></h3>
+                        </c:when>
+                        <c:otherwise>
+                            <c:forEach items="${menus}" var="menu" varStatus="loop">
+                                <c:if test="${(loop.index) ==0 || (loop.index)%4==0}">
+                                    <div class="w3-row-padding w3-padding-16 w3-center">
+                                        <c:set var= "close" value= "${loop.index+3}" />
                                     </c:if>
-                                    <h2><b class="w3-xlarge w3-text-brown">${menu.name}</b></h2>
-                                    <i class="w3-small w3-text-dark_grey">${menu.description}</i><p></p>
-                                    <b class="w3-large w3-text-brown ">HKD ${menu.price}</b><p></P>
-                                    <a href="<c:url value="/menu/view/${menu.food_id}" />" class=" w3-large w3-btn w3-dark-grey w3-round-large w3-center" style="margin-bottom:10px"><fmt:message key='menu.viewMore'/></a> 
-                                    <br>
-                                    <c:choose>
-                                        <c:when test="${menu.available}">
-                                            <a href="<c:url value="/menu/addtoCart">
-                                                   <c:param name="food_Id" value="${menu.food_id}" />
-                                               </c:url>"><fmt:message key='menu.addToCart'/></a>
-                                        </c:when>    
-                                        <c:otherwise>
-                                            <p class="w3-text-dark-grey w3-large" style="text-shadow:1px 1px 0 #444"><fmt:message key='menu.soldOut'/></p>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </div>
-                                <c:if test="${(loop.index) == close }">
-                                </div>  
-                            </c:if>    
-                        </c:forEach>
+                                    <div class="w3-quarter w3-cell">
+                                        <c:set var= "count" value= "0" />
+                                        <c:forEach items="${images}" var="image">
+                                            <c:if test="${count==0}">
+                                                <c:if test="${image.food_id == menu.food_id}">
+                                                    <img src="data:image/jpg;base64,${image.base64img}" alt="No image" style="width:85%"/>
+                                                    <c:set var= "count" value= "1" />
+                                                </c:if>
+                                            </c:if>
+                                        </c:forEach>
+                                        <c:if test="${count==0}"> 
+                                            <img src=""  style="width:85%">
+                                        </c:if>
+                                        <h2><b class="w3-xlarge w3-text-brown">${menu.name}</b></h2>
+                                        <i class="w3-small w3-text-dark_grey">${menu.description}</i><p></p>
+                                        <b class="w3-large w3-text-brown ">HKD ${menu.price}</b><p></P>
+                                        <a href="<c:url value="/menu/view/${menu.food_id}" />" class=" w3-large w3-btn w3-dark-grey w3-round-large w3-center" style="margin-bottom:10px"><fmt:message key='menu.viewMore'/></a> 
+                                        <br>
+                                        <c:choose>
+                                            <c:when test="${menu.available}">
+                                                <a href="<c:url value="/menu/addtoCart">
+                                                       <c:param name="food_Id" value="${menu.food_id}" />
+                                                   </c:url>"><fmt:message key='menu.addToCart'/></a>
+                                            </c:when>    
+                                            <c:otherwise>
+                                                <p class="w3-text-dark-grey w3-large" style="text-shadow:1px 1px 0 #444"><fmt:message key='menu.soldOut'/></p>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                    <c:if test="${(loop.index) == close }">
+                                    </div>  
+                                </c:if>    
+                            </c:forEach>
 
-                    </c:otherwise>
-                </c:choose>
+                        </c:otherwise>
+                    </c:choose>
 
-            </div></div></div>
-    <br><br>
-    <!-- Footer -->
-    <footer class="w3-container w3-dark-grey" style="padding:32px">
-        <a href="#" class="w3-button w3-black w3-padding-large w3-margin-bottom"> <fmt:message key='menu.to_the_top'/></a>
-    </footer>               
-</body>
-
+                </div>
+            </div>
+        </div>
+        <br><br>
+        <!-- Footer -->
+        <footer class="w3-container w3-dark-grey" style="padding:32px">
+            <a href="#" class="w3-button w3-black w3-padding-large w3-margin-bottom"> <fmt:message key='menu.to_the_top'/></a>
+        </footer>               
+    </body>
 </html>

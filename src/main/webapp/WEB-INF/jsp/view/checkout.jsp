@@ -69,13 +69,8 @@
             <div class="w3-content">
                 <div class="w3-row" style="padding-top:10px">
                     <div class="w3-threequarter">
-                        <h1 ><fmt:message key='viewcart.shoppingCart'/></h1>
+                        <h1 ><fmt:message key='viewcart.Check out List'/></h1>
                     </div>
-                    <c:if test="${!empty carts}">
-                        <div class="w3-quarter">
-                            <a  style="margin-top:5px" href="<c:url value="/menu/emptycart" />" class="w3-btn w3-right w3-round-large " style="background-color:#cbbeb5" ><fmt:message key='viewcart.emptyCartAction'/></a>
-                        </div>
-                    </c:if>
                 </div>
                 <br>
                 <div class="w3-row w3-border w3-border-brown w3-container w3-padding-32">
@@ -106,6 +101,7 @@
                                                 <c:set var="Total_bill" value="${Total_bill + SubTotal}" />
                                                 <c:set var="Total_qty" value="${Total_qty + cart.value}" />
                                                 <td width="50%">${menu.name}   </td>
+
                                                 <td width="25%" class="w3-center">
                                                     <a href="<c:url value="/menu/minustoCart"><c:param name="food_Id" value="${menu.food_id}" /></c:url>"><fmt:message key='menu.minus'/></a>
                                                     ${cart.value} 
@@ -140,17 +136,21 @@
                                             </td>
                                         </tr>
                                     </table>
-                                    <br><br><br>
-                                    <a href="<c:url value="/menu/viewcart/checkout"/>" class="w3-btn w3-dark-grey w3-right w3-round-large w3-large"><fmt:message key='menu.Checkout'/></a>
                                 </h3>
 
                             </div>
                         </c:otherwise>
-                    </c:choose>        
+                    </c:choose>            
+                </div>
+                <div class="w3-row w3-border w3-border-brown w3-container w3-padding-32">
+                    Your delivery address is  ${webUser.address} .<br><br>
+                    Your contact numbber is ${webUser.phone}.  <br><br>
+                    <form:form method="POST" >
+                        <input name="submit" type="submit" value="Comfirm" class="w3-btn w3-dark-grey w3-right w3-round-large w3-large" style="background-color:#cbbeb5;width: 150px"/><br>
+                    </form:form>
 
                 </div>
                 <br>
-
                 <a href="<c:url value="/menu" />" class="w3-btn w3-dark-grey w3-right w3-round-large w3-large"><fmt:message key='backToMenuList'/></a>
             </div>
         </div>  

@@ -78,9 +78,14 @@
                             <p><i class="w3-large"><c:out value="${menu.name}" /></i></p>
                         </div>
                         <div class="w3-quarter">
-                            <a href="<c:url value="/menu/addtoCart"><c:param name="food_Id" value="${menu.food_id}" /></c:url>" class="w3-right w3-btn w3-left w3-round-large w3-brown"><fmt:message key='view.addToCart'/></a>
-                            </div></div>   
-                        <b class="w3-xlarge"><fmt:message key='view.price'/>: </b>
+                            <a href="
+                               <c:url value="/menu/addtoCart">
+                                   <c:param name="food_Id" value="${menu.food_id}" />
+                               </c:url>" class="w3-right w3-btn w3-left w3-round-large w3-brown" ><fmt:message key='view.addToCart'/>
+                            </a>
+                        </div>
+                    </div>
+                    <b class="w3-xlarge"><fmt:message key='view.price'/>: </b>
                     <p><i class="w3-large">HKD <c:out value="${menu.price}" /></i></p>
                     <b class="w3-xlarge"><fmt:message key='view.avail'/> </b>
                     <p><i class="w3-large">
@@ -94,49 +99,58 @@
                             </c:choose></i></p>
                     <b class="w3-xlarge"><fmt:message key='view.description'/> </b>
                     <p><i class="w3-large"><c:out value="${menu.description}" /></i></p>
-                        <c:if test="${fn:length(menu.attachments) > 0}">
+
+                    <c:if test="${fn:length(menu.attachments) > 0}" >
                         <br>
                         <c:forEach items="${images}" var="image" >
                             <img src="data:image/jpg;base64,${image.base64img}" alt="No image" height="" width="200" style="padding:5px"/>
                         </c:forEach>
                         <br>
                     </c:if>
+
                 </div>
                 <br>
                 <div class="w3-row w3-border w3-border-brown w3-container w3-padding-24 ">
                     <div class="w3-row">
                         <div class="w3-threequarter">
-                            <h3 ><b><fmt:message key='view.comment'/> :</b><h2>    
-                                    </div>
-                                    <div class="w3-quarter">
-                                        <a href="<c:url value="/menu/make_comment/${menu.food_id}" />" class="w3-right w3-btn w3-left w3-round-large w3-black"><fmt:message key='view.makeComment'/></a>
-                                    </div></div>
-                                    <c:choose>
-                                        <c:when test="${fn:length(comments) == 0}">
-                                            <h4 class="w3-center"> <fmt:message key='view.noComment'/></h4>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <table class="w3-table  w3-bordered w3-hoverable">
-                                                <tr class="w3-large ">
-                                                    <th width="10%"><fmt:message key='view.comment'/> </th>
-                                                    <th width="30%"><fmt:message key='view.commentedBy'/></th>
-                                                    <th  width="60%"><fmt:message key='view.detail'/></th>
-                                                </tr>
-                                                <c:set var= "count" value= "0" />
-                                                <c:forEach  items="${comments}" var="comment">
-                                                    <tr>
-                                                        <th width="20%"># ${count} </td>
-                                                        <td width="30%">${comment.username}</td>
-                                                        <td width="50%"><i>${comment.detail}</i></td>
-                                                    </tr>  
-                                                </c:forEach>
-                                            </table>     
-                                        </c:otherwise>
-                                    </c:choose> 
-                                    </div>
-                                    <br>
-                                    <a href="<c:url value="/menu" />" class="w3-btn w3-dark-grey w3-right w3-round-large w3-large"><fmt:message key='backToMenuList'/></a>
-                                    </div>
-                                    </div>      
-                                    </body>
-                                    </html>
+                            <h3 >
+                                <b>
+                                    <fmt:message key='view.comment'/> :
+                                </b>
+                            </h3>
+                        </div>
+                        <div class="w3-quarter">
+                            <a href="<c:url value="/menu/make_comment/${menu.food_id}" />" class="w3-right w3-btn w3-left w3-round-large w3-black">
+                                <fmt:message key='view.makeComment'/>
+                            </a>
+                        </div>
+                    </div>
+                    <c:choose>
+                        <c:when test="${fn:length(comments) == 0}">
+                            <h4 class="w3-center"> <fmt:message key='view.noComment'/></h4>
+                        </c:when>
+                        <c:otherwise>
+                            <table class="w3-table  w3-bordered w3-hoverable">
+                                <tr class="w3-large ">
+                                    <th width="10%"><fmt:message key='view.comment'/> </th>
+                                    <th width="30%"><fmt:message key='view.commentedBy'/></th>
+                                    <th  width="60%"><fmt:message key='view.detail'/></th>
+                                </tr>
+                                <c:set var= "count" value= "0" />
+                                <c:forEach  items="${comments}" var="comment">
+                                    <tr>
+                                        <th width="20%"># ${count} </td>
+                                        <td width="30%">${comment.username}</td>
+                                        <td width="50%"><i>${comment.detail}</i></td>
+                                    </tr>  
+                                </c:forEach>
+                            </table>     
+                        </c:otherwise>
+                    </c:choose> 
+                </div>
+                <br>
+                <a href="<c:url value="/menu" />" class="w3-btn w3-dark-grey w3-right w3-round-large w3-large"><fmt:message key='backToMenuList'/></a>
+            </div>
+        </div>      
+    </body>
+</html>

@@ -59,66 +59,67 @@
             <h1 class="w3-text-black"><fmt:message key='menu.orderingSys'/></h1>
             <br>
             <p><a href="<c:url value="/menu/#menu" />" class="w3-button w3-large w3-black"><fmt:message key='menu.letMeSee'/></a></p>
-        </div>
-    </header>
+        </header>
 
-    <!-- content-->
-    <div class=""w3-container w3-white w3-padding-64 w3-large" id="create" >
-        <div class="w3-content">
-            <div class="w3-row" style="padding-top:24px">
-                <div class="w3-threequarter">
-                    <h1 ><fmt:message key='menu.title'/></h1>
+        <!-- content-->
+        <div class=""w3-container w3-white w3-padding-64 w3-large" id="create" >
+            <div class="w3-content">
+                <div class="w3-row" style="padding-top:24px">
+                    <div class="w3-threequarter">
+                        <h1 ><fmt:message key='menu.title'/></h1>
+                    </div>
+                    <div class="w3-quarter">
+                        <a  style="margin-top:15px" href="<c:url value="/user/Register" />" class="w3-btn w3-right w3-round-large w3-brown" ><fmt:message key='manage.create_a_user'/></a>
+                    </div>
                 </div>
-                <div class="w3-quarter">
-                    <a  style="margin-top:15px" href="<c:url value="/user/Register" />" class="w3-btn w3-right w3-round-large w3-brown" ><fmt:message key='manage.create_a_user'/></a>
-                </div></div>
-            <br>
-            <div class="w3-row w3-border w3-border-brown w3-container w3-padding-32">
-                <c:choose>
-                    <c:when test="${fn:length(webUsers) == 0}">
-                        <h3 class="w3-center"><fmt:message key='menu.no_user'/></h3>
-                    </c:when>
-                    <c:otherwise>
-                        <table class="w3-table w3-bordered w3-hoverable">
-                            <tr class="w3-large ">
-                                <th><fmt:message key='manage.username'/></th><th><fmt:message key='manage.password'/></th><th><fmt:message key='manage.roles'/></th><th><fmt:message key='manage.action'/></th>
-                            </tr>
-                            <c:forEach items="${webUsers}" var="user">
-                                <tr>
-                                    <td>${user.username}</td><td>${user.password}</td>
-                                    <td>
-                                        <c:forEach items="${user.roles}" var="role" varStatus="status">
-                                            <c:if test="${!status.first}">, </c:if>
-                                            <c:choose>
-                                                <c:when test="${role.role eq'ROLE_USER'}"> 
-                                                    <span class="w3-tag  w3-round" style="background-color:#cbbeb5">${role.role}</span>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <span class="w3-tag w3-round" style="background-color:#DA9FA8;" >${role.role}</span>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </c:forEach>
-                                    </td>
-                                    <td>
-                                        <a href="<c:url value="/user/edit/${user.username}" />" class="w3-btn w3-dark-grey w3-round-large w3-center"><fmt:message key='manage.edit'/></a>
-                                        <c:if test="${pageContext.request.userPrincipal.name != user.username}">
-                                            <a href="<c:url value="/user/delete/${user.username}" />" class="w3-btn w3-dark-grey w3-round-large w3-center"><fmt:message key='manage.delete'/></a>
-                                        </c:if>
-
-                                    </td>
+                <br>
+                <div class="w3-row w3-border w3-border-brown w3-container w3-padding-32">
+                    <c:choose>
+                        <c:when test="${fn:length(webUsers) == 0}">
+                            <h3 class="w3-center"><fmt:message key='menu.no_user'/></h3>
+                        </c:when>
+                        <c:otherwise>
+                            <table class="w3-table w3-bordered w3-hoverable">
+                                <tr class="w3-large ">
+                                    <th><fmt:message key='manage.username'/></th><th><fmt:message key='manage.password'/></th><th><fmt:message key='manage.roles'/></th><th><fmt:message key='manage.action'/></th>
                                 </tr>
-                            </c:forEach>
-                        </table>
+                                <c:forEach items="${webUsers}" var="user">
+                                    <tr>
+                                        <td>${user.username}</td><td>${user.password}</td>
+                                        <td>
+                                            <c:forEach items="${user.roles}" var="role" varStatus="status">
+                                                <c:if test="${!status.first}">, </c:if>
+                                                <c:choose>
+                                                    <c:when test="${role.role eq'ROLE_USER'}"> 
+                                                        <span class="w3-tag  w3-round" style="background-color:#cbbeb5">${role.role}</span>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <span class="w3-tag w3-round" style="background-color:#DA9FA8;" >${role.role}</span>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:forEach>
+                                        </td>
+                                        <td>
+                                            <a href="<c:url value="/user/edit/${user.username}" />" class="w3-btn w3-dark-grey w3-round-large w3-center"><fmt:message key='manage.edit'/></a>
+                                            <c:if test="${pageContext.request.userPrincipal.name != user.username}">
+                                                <a href="<c:url value="/user/delete/${user.username}" />" class="w3-btn w3-dark-grey w3-round-large w3-center"><fmt:message key='manage.delete'/></a>
+                                            </c:if>
 
-                    </c:otherwise>
-                </c:choose>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </table>
 
-            </div> </div></div>  
-    <br><br>
-    <!-- Footer -->
-    <footer class="w3-container w3-dark-grey" style="padding:32px">
-        <a href="#" class="w3-button w3-black w3-padding-large w3-margin-bottom"> <fmt:message key='menu.to_the_top'/></a>
-    </footer>               
-</body>
-</body>
+                        </c:otherwise>
+                    </c:choose>
+
+                </div>
+            </div>
+        </div>  
+        <br><br>
+        <!-- Footer -->
+        <footer class="w3-container w3-dark-grey" style="padding:32px">
+            <a href="#" class="w3-button w3-black w3-padding-large w3-margin-bottom"> <fmt:message key='menu.to_the_top'/></a>
+        </footer>               
+    </body>
 </html>

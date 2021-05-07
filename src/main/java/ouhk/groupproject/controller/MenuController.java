@@ -7,6 +7,7 @@ import java.util.Base64;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,22 +23,24 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
+import ouhk.groupproject.dao.WebUserRepository;
 import ouhk.groupproject.exception.AttachmentNotFound;
 import ouhk.groupproject.exception.MenuNotFound;
 import ouhk.groupproject.model.Attachment;
 import ouhk.groupproject.model.Menu;
 import ouhk.groupproject.model.Base64image;
 import ouhk.groupproject.model.Comment;
+import ouhk.groupproject.model.WebUser;
 import ouhk.groupproject.service.MenuService;
 import ouhk.groupproject.service.AttachmentService;
 import ouhk.groupproject.service.CommentService;
+import ouhk.groupproject.service.WebUserService;
 import ouhk.groupproject.view.DownloadingView;
 
 @Controller
 @RequestMapping("/menu")
 public class MenuController {
 
-    
     @Autowired
     private MenuService menuService;
 
@@ -46,6 +49,9 @@ public class MenuController {
 
     @Autowired
     private AttachmentService attachmentService;
+
+    @Resource
+    WebUserRepository webUserRepo;
 
     @GetMapping("")
     public String list(ModelMap model) {
@@ -71,7 +77,7 @@ public class MenuController {
     }
 
     public static class Form {
- 
+
         private String foodname;
         private String description;
         private Integer price;
@@ -128,10 +134,10 @@ public class MenuController {
     @GetMapping("/view/{food_Id}")
     public String view(@PathVariable("food_Id") long food_Id,
             ModelMap model) {
-        
+
         food_id_access id_access = new food_id_access();
         id_access.setID(food_Id);
-        
+
         Menu menu = menuService.getMenu(food_Id);
         if (menu == null) {
             return "redirect:/menu";
@@ -198,7 +204,7 @@ public class MenuController {
 
         food_id_access id_access = new food_id_access();
         id_access.setID(food_Id);
-        
+
         return modelAndView;
     }
 
@@ -206,7 +212,7 @@ public class MenuController {
     public String edit(@PathVariable("food_Id") long food_Id, Form form,
             Principal principal, HttpServletRequest request)
             throws IOException, MenuNotFound {
-        
+
         Menu menu = menuService.getMenu(food_Id);
         if (menu == null
                 || (!request.isUserInRole("ROLE_ADMIN"))) {
@@ -222,6 +228,29 @@ public class MenuController {
             throws MenuNotFound {
         menuService.delete(food_Id);
         return "redirect:/menu";
+    }
+
+    public static class Cart {
+
+        private String food_id;
+        private String qty;
+
+        public String getFood_id() {
+            return food_id;
+        }
+
+        public void setFood_id(String food_id) {
+            this.food_id = food_id;
+        }
+
+        public String getQty() {
+            return qty;
+        }
+
+        public void setQty(String qty) {
+            this.qty = qty;
+        }
+
     }
 
     @GetMapping("/addtoCart")
@@ -251,6 +280,66 @@ public class MenuController {
         return "redirect:/menu/viewcart/";
     }
 
+    @GetMapping("/minustoCart")
+    public String minustoCart(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int food_Id;
+
+        try {
+            food_Id = Integer.parseInt(request.getParameter("food_Id"));
+        } catch (Exception e) {
+            response.sendRedirect("menu");
+            return "redirect:/menu/";
+        }
+
+        HttpSession session = request.getSession();
+        if (session.getAttribute("carts") == null) {
+            session.setAttribute("carts", new Hashtable<>());
+            return "redirect:/menu/viewcart/";
+        }
+
+        @SuppressWarnings("unchecked")
+        Map<Integer, Integer> carts
+                = (Map<Integer, Integer>) session.getAttribute("carts");
+
+        int qty = carts.get(Integer.parseInt(request.getParameter("food_Id")));
+        qty--;
+        carts.remove(Integer.parseInt(request.getParameter("food_Id")));
+        for (int i = 0; i < qty; i++) {
+            if (!carts.containsKey(food_Id)) {
+                carts.put(food_Id, 0);
+            }
+            carts.put(food_Id, carts.get(food_Id) + 1);
+        }
+
+        return "redirect:/menu/viewcart/";
+    }
+
+    @GetMapping("/removefromCart")
+    public String removefromCart(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int food_Id;
+
+        try {
+            food_Id = Integer.parseInt(request.getParameter("food_Id"));
+        } catch (Exception e) {
+            response.sendRedirect("menu");
+            return "redirect:/menu/";
+        }
+
+        HttpSession session = request.getSession();
+        if (session.getAttribute("carts") == null) {
+            session.setAttribute("carts", new Hashtable<>());
+            return "redirect:/menu/viewcart/";
+        }
+
+        @SuppressWarnings("unchecked")
+        Map<Integer, Integer> carts
+                = (Map<Integer, Integer>) session.getAttribute("carts");
+
+        carts.remove(Integer.parseInt(request.getParameter("food_Id")));
+
+        return "redirect:/menu/viewcart/";
+    }
+
     @GetMapping("/emptycart")
     private String emptycart(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -262,6 +351,23 @@ public class MenuController {
     public String viewcart(ModelMap model) {
         model.addAttribute("menus", menuService.getMenus());
         return ("viewcart");
+    }
+
+    @GetMapping("/viewcart/checkout")
+    public ModelAndView checkout(ModelMap model, Principal principal) {      
+        model.addAttribute("webUser", webUserRepo.findById(principal.getName()).orElse(null));
+        model.addAttribute("menus", menuService.getMenus());
+        return new ModelAndView("checkout");
+    }
+
+    @PostMapping("/viewcart/checkout")
+    public String checkout(HttpServletRequest request)
+            throws ServletException, IOException {
+
+        System.out.println("go1");
+        request.getSession().removeAttribute("carts");
+        System.out.println("go2");
+        return "redirect:/menu/";
     }
 
     public static class CommentForm {
@@ -283,8 +389,8 @@ public class MenuController {
         model.addAttribute("menu", menuService.getMenu(food_Id));
         food_id_access id_access = new food_id_access();
         id_access.setID(food_Id);
-        
-        return new ModelAndView("make_comment", "CommentForm", new CommentForm()); 
+
+        return new ModelAndView("make_comment", "CommentForm", new CommentForm());
     }
 
     @PostMapping("/make_comment/{food_Id}")

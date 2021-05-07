@@ -9,7 +9,7 @@
 
     <name>Groupproject</name>
 
-        <properties>
+    <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.framework.version>5.3.5</spring.framework.version>
