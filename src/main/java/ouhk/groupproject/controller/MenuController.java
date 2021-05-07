@@ -37,6 +37,7 @@ import ouhk.groupproject.view.DownloadingView;
 @RequestMapping("/menu")
 public class MenuController {
 
+    
     @Autowired
     private MenuService menuService;
 
@@ -70,7 +71,7 @@ public class MenuController {
     }
 
     public static class Form {
-
+ 
         private String foodname;
         private String description;
         private Integer price;
@@ -127,6 +128,10 @@ public class MenuController {
     @GetMapping("/view/{food_Id}")
     public String view(@PathVariable("food_Id") long food_Id,
             ModelMap model) {
+        
+        food_id_access id_access = new food_id_access();
+        id_access.setID(food_Id);
+        
         Menu menu = menuService.getMenu(food_Id);
         if (menu == null) {
             return "redirect:/menu";
@@ -191,6 +196,9 @@ public class MenuController {
 
         modelAndView.addObject("MenuForm", menuForm);
 
+        food_id_access id_access = new food_id_access();
+        id_access.setID(food_Id);
+        
         return modelAndView;
     }
 
@@ -198,6 +206,7 @@ public class MenuController {
     public String edit(@PathVariable("food_Id") long food_Id, Form form,
             Principal principal, HttpServletRequest request)
             throws IOException, MenuNotFound {
+        
         Menu menu = menuService.getMenu(food_Id);
         if (menu == null
                 || (!request.isUserInRole("ROLE_ADMIN"))) {
@@ -272,7 +281,10 @@ public class MenuController {
     @GetMapping("/make_comment/{food_Id}")
     public ModelAndView make_comment(@PathVariable("food_Id") long food_Id, ModelMap model) {
         model.addAttribute("menu", menuService.getMenu(food_Id));
-        return new ModelAndView("make_comment", "CommentForm", new CommentForm());
+        food_id_access id_access = new food_id_access();
+        id_access.setID(food_Id);
+        
+        return new ModelAndView("make_comment", "CommentForm", new CommentForm()); 
     }
 
     @PostMapping("/make_comment/{food_Id}")
