@@ -52,6 +52,7 @@ public class MenuController {
 
     @Resource
     WebUserRepository webUserRepo;
+    
 
     @GetMapping("")
     public String list(ModelMap model) {
@@ -71,9 +72,15 @@ public class MenuController {
         return "menu";
     }
 
-    @GetMapping("/create")
-    public ModelAndView create() {
-        return new ModelAndView("create", "MenuForm", new Form());
+    @GetMapping({"/manage_menu"})
+    public String manage_menu(ModelMap model) {
+        model.addAttribute("menus", menuService.getMenus());
+        return "manage_menu";
+    }
+
+    @GetMapping("/create_menu")
+    public ModelAndView create_menu() {
+        return new ModelAndView("create_menu", "MenuForm", new Form());
     }
 
     public static class Form {
@@ -125,8 +132,8 @@ public class MenuController {
         }
     }
 
-    @PostMapping("/create")
-    public String create(Form form, Principal principal) throws IOException {
+    @PostMapping("/create_menu")
+    public String create_menu(Form form, Principal principal) throws IOException {
         long food_Id = menuService.createMenu(form.getFoodname(), form.getDescription(), form.getPrice(), form.getAvailable(), form.getAttachments());
         return "redirect:/menu/view/" + food_Id;
     }
@@ -179,11 +186,11 @@ public class MenuController {
     public String deleteAttachment(@PathVariable("food_Id") long food_Id,
             @PathVariable("attachment") String name) throws AttachmentNotFound {
         menuService.deleteAttachment(food_Id, name);
-        return "redirect:/menu/edit/" + food_Id;
+        return "redirect:/menu/edit_menu/" + food_Id;
     }
 
-    @GetMapping("/edit/{food_Id}")
-    public ModelAndView showEdit(@PathVariable("food_Id") long food_Id,
+    @GetMapping("/edit_menu/{food_Id}")
+    public ModelAndView showEdit_menu(@PathVariable("food_Id") long food_Id,
             Principal principal, HttpServletRequest request) {
         Menu menu = menuService.getMenu(food_Id);
         if (menu == null
@@ -191,7 +198,7 @@ public class MenuController {
             return new ModelAndView(new RedirectView("/menu", true));
         }
 
-        ModelAndView modelAndView = new ModelAndView("edit");
+        ModelAndView modelAndView = new ModelAndView("edit_menu");
         modelAndView.addObject("menu", menu);
 
         Form menuForm = new Form();
@@ -208,8 +215,8 @@ public class MenuController {
         return modelAndView;
     }
 
-    @PostMapping("/edit/{food_Id}")
-    public String edit(@PathVariable("food_Id") long food_Id, Form form,
+    @PostMapping("/edit_menu/{food_Id}")
+    public String edit_menu(@PathVariable("food_Id") long food_Id, Form form,
             Principal principal, HttpServletRequest request)
             throws IOException, MenuNotFound {
 
@@ -354,7 +361,7 @@ public class MenuController {
     }
 
     @GetMapping("/viewcart/checkout")
-    public ModelAndView checkout(ModelMap model, Principal principal) {      
+    public ModelAndView checkout(ModelMap model, Principal principal) {
         model.addAttribute("webUser", webUserRepo.findById(principal.getName()).orElse(null));
         model.addAttribute("menus", menuService.getMenus());
         return new ModelAndView("checkout");

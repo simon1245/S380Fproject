@@ -34,10 +34,10 @@ public class WebUserController {
         return "login";
     }
 
-    @GetMapping({"/manage"})
+    @GetMapping({"/manage_user"})
     public String list(ModelMap model) {
         model.addAttribute("webUsers", webUserRepo.findAll());
-        return "manage";
+        return "manage_user";
     }
 
     public static class Form {
@@ -155,7 +155,7 @@ public class WebUserController {
         for (String role : form.getRoles()) {
             if ("ADMIN".equals(role)) {
 
-                return "redirect:/user/manage";
+                return "redirect:/user/manage_user";
             } else {
                 return "redirect:/login";
             }
@@ -166,10 +166,10 @@ public class WebUserController {
     @GetMapping("/delete/{username}")
     public View deleteTicket(@PathVariable("username") String username) {
         webUserRepo.delete(webUserRepo.findById(username).orElse(null));
-        return new RedirectView("/user/manage", true);
+        return new RedirectView("/user/manage_user", true);
     }
 
-    @GetMapping("/edit/{username}")
+    @GetMapping("/edit_user/{username}")
     public ModelAndView EditUser(@PathVariable("username") String username,
             Principal principal, HttpServletRequest request) {
         WebUser webUser = webUserRepo.findById(username).orElse(null);
@@ -178,7 +178,7 @@ public class WebUserController {
             return new ModelAndView(new RedirectView("/menu", true));
         }
 
-        ModelAndView modelAndView = new ModelAndView("user_edit");
+        ModelAndView modelAndView = new ModelAndView("edit_user");
         Form Form = new Form();
         if (!(principal.getName().equals(username)))
         {
@@ -195,7 +195,7 @@ public class WebUserController {
         return modelAndView;
     }
 
-    @PostMapping("/edit/{username}")
+    @PostMapping("/edit_user/{username}")
     public String EditUser(Model model, Form form) throws IOException {
         if (form.password == null ? form.confirm_password == null : !(form.password.equals(form.confirm_password))) {
             System.out.println(form.password);
@@ -205,7 +205,7 @@ public class WebUserController {
             form.confirm_password = "";
             form.error_msg = "Your password do not match with your comfirm password";
             model.addAttribute("webUser", form);
-            return "user_edit";
+            return "edit_user";
         }
         if (form.password.length() < 8) {
             System.out.println("asdad");
@@ -213,7 +213,7 @@ public class WebUserController {
             form.confirm_password = "";
             form.error_msg = "Your password should have at least 8 characters ";
             model.addAttribute("webUser", form);
-            return "user_edit";
+            return "edit_user";
         }
         WebUser user = new WebUser(form.getUsername(),
                 form.getPassword(),
@@ -226,7 +226,7 @@ public class WebUserController {
         for (String role : form.getRoles()) {
             if ("ADMIN".equals(role)) {
 
-                return "redirect:/user/manage";
+                return "redirect:/user/manage_user";
             } else {
                 return "redirect:/menu";
             }

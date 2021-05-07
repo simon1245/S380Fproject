@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
-    <title><fmt:message key='manage.title'/> - <fmt:message key='menu.title'/></title>
+    <title><fmt:message key='manage_user.title'/> - <fmt:message key='manage_user.title'/></title>
     <style>
         body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
         .w3-bar-block .w3-bar-item {padding:20px}
@@ -27,11 +27,11 @@
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
                         <security:authorize access="hasRole('USER') or hasRole('ADMIN')">
-                            <a href="<c:url value="/user/edit/${pageContext.request.userPrincipal.name}" />"class="w3-bar-item w3-button w3-right w3-medium"><u>${pageContext.request.userPrincipal.name}</u></a>
+                            <a href="<c:url value="/user/edit_user/${pageContext.request.userPrincipal.name}" />"class="w3-bar-item w3-button w3-right w3-medium"><u>${pageContext.request.userPrincipal.name}</u></a>
                                 </security:authorize>
                         <a href="<c:url value="/menu/viewcart" />" class="w3-bar-item w3-button w3-right w3-medium"><fmt:message key='viewCart'/></a>
                         <security:authorize access="hasRole('ADMIN')">
-                            <a href="<c:url value="/user/manage" />"class="w3-bar-item w3-button w3-right w3-medium"><fmt:message key='manageUser'/></a>
+                            <a href="<c:url value="/menu/manage_menu" />"class="w3-bar-item w3-button w3-right w3-medium"><fmt:message key='manageMenu'/></a>
                         </security:authorize>
                     </c:when>
                     <c:otherwise>
@@ -43,11 +43,11 @@
                 <c:choose>
 
                     <c:when test = "${language == 'en_US'}">  
-                        <a href="<c:url value="/manage/zh-HK" />" class="w3-right w3-button w3-medium">中文</a>
+                        <a href="<c:url value="/manage_user/zh-HK" />" class="w3-right w3-button w3-medium">中文</a>
                     </c:when>
 
                     <c:when test = "${language == 'zh_HK'}">  
-                        <a href="<c:url value="/manage/en" />" class="w3-right w3-button w3-medium">English</a>
+                        <a href="<c:url value="/manage_user/en" />" class="w3-right w3-button w3-medium">English</a>
                     </c:when>
 
                 </c:choose>
@@ -100,7 +100,7 @@
                                             </c:forEach>
                                         </td>
                                         <td>
-                                            <a href="<c:url value="/user/edit/${user.username}" />" class="w3-btn w3-dark-grey w3-round-large w3-center"><fmt:message key='manage.edit'/></a>
+                                            <a href="<c:url value="/user/edit_user/${user.username}" />" class="w3-btn w3-dark-grey w3-round-large w3-center"><fmt:message key='manage.edit_user'/></a>
                                             <c:if test="${pageContext.request.userPrincipal.name != user.username}">
                                                 <a href="<c:url value="/user/delete/${user.username}" />" class="w3-btn w3-dark-grey w3-round-large w3-center"><fmt:message key='manage.delete'/></a>
                                             </c:if>

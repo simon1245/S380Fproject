@@ -34,11 +34,12 @@
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
                         <security:authorize access="hasRole('USER') or hasRole('ADMIN')">
-                            <a href="<c:url value="/user/edit/${pageContext.request.userPrincipal.name}" />"class="w3-bar-item w3-button w3-right w3-medium"><u>${pageContext.request.userPrincipal.name}</u></a>
+                            <a href="<c:url value="/user/edit_user/${pageContext.request.userPrincipal.name}" />"class="w3-bar-item w3-button w3-right w3-medium"><u>${pageContext.request.userPrincipal.name}</u></a>
                                 </security:authorize>
                         <a href="<c:url value="/menu/viewcart" />" class="w3-bar-item w3-button w3-right w3-medium"><fmt:message key='viewCart'/></a>
                         <security:authorize access="hasRole('ADMIN')">
-                            <a href="<c:url value="/user/manage" />"class="w3-bar-item w3-button w3-right w3-medium"><fmt:message key='manageUser'/></a>
+                            <a href="<c:url value="/user/manage_user" />"class="w3-bar-item w3-button w3-right w3-medium"><fmt:message key='manageUser'/></a>
+                            <a href="<c:url value="/menu/manage_menu" />"class="w3-bar-item w3-button w3-right w3-medium"><fmt:message key='manageMenu'/></a>
                         </security:authorize>
                     </c:when>
                     <c:otherwise>
@@ -73,7 +74,7 @@
                 <h1 class="w3-center w3-xxxlarge w3-text-brown" style="margin-bottom:64px"><fmt:message key='menu.menuName'/></h1>
                 <div class="w3-row w3-center w3-border w3-border-brown ">
                     <security:authorize access="hasRole('ADMIN')">
-                        <a href="<c:url value="/menu/create" />" class="w3-right w3-btn w3-dark-grey w3-round-large w3-medium" style=" margin: 10px;"><fmt:message key='menu.description'/></a>
+                        <a href="<c:url value="/menu/create_menu" />" class="w3-right w3-btn w3-dark-grey w3-round-large w3-medium" style=" margin: 10px;"><fmt:message key='menu.description'/></a>
                     </security:authorize>
                     <a href="<c:url value="/menu/viewcart"/>" class="w3-right w3-btn w3-round-large w3-medium" style="background-color:#cbbeb5; margin: 10px;"><fmt:message key='menu.viewCart'/></a><br><br>
                     <c:choose>
