@@ -92,7 +92,7 @@
                         </security:authorize>
 
                         <br /><br />
-                        <input name="submit" id="submit" type="submit" value="Register" class="w3-btn w3-left w3-round-large" style="background-color:#cbbeb5;width: 150px"/><br>
+                        <input name="submit" id="submit" type="submit" value="<fmt:message key='login.register'/>" class="w3-btn w3-left w3-round-large" style="background-color:#cbbeb5;width: 150px"/><br>
                     </form:form>
                     <br>
                 </div>

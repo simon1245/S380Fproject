@@ -37,3 +37,4 @@ INSERT INTO Comment(detail,username,food_id) VALUES('Very tasty!', 'Soe Keung', 
 INSERT INTO Comment(detail,username,food_id) VALUES('Very expensive!', 'Jenny Wong', 6);
 INSERT INTO Comment(detail,username,food_id) VALUES('Very cheap!', 'Simon Wong', 3);
 INSERT INTO Comment(detail,username,food_id) VALUES('Very tasty!', 'Jenny Wong', 2);
+
