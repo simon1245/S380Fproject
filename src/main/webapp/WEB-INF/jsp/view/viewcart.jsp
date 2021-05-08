@@ -91,12 +91,11 @@
                             <table class="w3-table w3-bordered w3-hoverable">
                                 <tr class="w3-large ">
                                     <th ><fmt:message key='viewcart.food'/>   </th>
-
                                     <th class="w3-center">
                                         <fmt:message key='viewcart.quantity'/></th>
                                     <th class="w3-center"><fmt:message key='viewcart.price'/>  </th>
-                                    <th> </th>
-                                    <th>SubTotal</th>
+                                    
+                                    <th class="w3-center"><fmt:message key='viewcart.subtotal'/></th>
                                 </tr>
                                 <c:forEach items="${carts}" var="cart">
                                     <tr>
@@ -106,15 +105,16 @@
                                                 <c:set var="SubTotal" value="${cart.value*menu.price}" />    
                                                 <c:set var="Total_bill" value="${Total_bill + SubTotal}" />
                                                 <c:set var="Total_qty" value="${Total_qty + cart.value}" />
-                                                <td width="50%">${menu.name}   </td>
-                                                <td width="25%" class="w3-center">
+                                                <td width="40%">${menu.name}   </td>
+                                                <td width="20%" class="w3-center">
                                                     <a href="<c:url value="/menu/minustoCart"><c:param name="food_Id" value="${menu.food_id}" /></c:url>"><fmt:message key='menu.minus'/></a>
                                                     ${cart.value} 
                                                     <a href="<c:url value="/menu/addtoCart"><c:param name="food_Id" value="${menu.food_id}" /></c:url>"><fmt:message key='menu.add'/></a>
-                                                    </td>
-                                                    <td><a href="<c:url value="/menu/removefromCart"><c:param name="food_Id" value="${menu.food_id}" /></c:url>"><fmt:message key='menu.removefromCart'/></td>
-                                                <td width="25%" class="w3-center">$${menu.price}  </td>
-                                                <td class="w3-center">$${SubTotal} </td>
+                                                    <br><a href="<c:url value="/menu/removefromCart"><c:param name="food_Id" value="${menu.food_id}" /></c:url>"><fmt:message key='viewcart.remove'/>
+                                                    
+                                                <td width="20%" class="w3-center">$${menu.price}  </td>
+                                                <td width="20%" class="w3-center">$${SubTotal}  </td>
+                                                <td class="w3-center"></td>
                                             </c:if>
                                         </c:forEach>
 
@@ -126,7 +126,7 @@
                                     <table align="right" >
                                         <tr >
                                             <td align="right">
-                                                Total of items in your cart! :
+                                                <fmt:message key='viewcart.totalItem'/>
                                             </td>
                                             <td  align="center">
                                                 ${Total_qty} 
@@ -134,7 +134,7 @@
                                         </tr>
                                         <tr>
                                             <td  align="right">
-                                                The total bill is:
+                                                <fmt:message key='viewcart.bill'/>
                                             </td>
                                             <td align="center"> 
                                                 $${Total_bill}

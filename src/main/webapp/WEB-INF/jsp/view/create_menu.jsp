@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
-    <title><fmt:message key='create_menu.createFood'/> -<fmt:message key='create_menu.title'/></title>
+    <title><fmt:message key='create.createFood'/> -<fmt:message key='create.title'/></title>
     <style>
         body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
         .w3-bar-block .w3-bar-item {padding:20px}
@@ -58,26 +58,26 @@
         <!-- content-->
         <div class="w3-container w3-white w3-padding-64 w3-large" >
             <div class="w3-content">
-                <h1 style="padding-top:20px"><fmt:message key='create_menu.createFood'/></h1>
+                <h1 style="padding-top:20px"><fmt:message key='create.createFood'/></h1>
                 <div class="w3-row w3-border w3-border-brown w3-container w3-padding-24">
                     <form:form method="POST" enctype="multipart/form-data"
                                modelAttribute="MenuForm">
-                        <form:label path="foodname" class="w3-large"><fmt:message key='create_menu.foodName'/>:</form:label><br />
+                        <form:label path="foodname" class="w3-large"><fmt:message key='create.foodName'/>:</form:label><br />
                         <form:input type="text" path="foodname" class="w3-input" style="width:70%"/><br /><br />
-                        <form:label path="price" class="w3-large"><fmt:message key='create_menu.price'/>:</form:label><br />
+                        <form:label path="price" class="w3-large"><fmt:message key='create.price'/>:</form:label><br />
                         <form:input path="price" rows="5" cols="30" class="w3-input" style="width:70%" /><br /><br />
-                        <form:label path="description" class="w3-large"><fmt:message key='create_menu.description'/>:</form:label><br />
+                        <form:label path="description" class="w3-large"><fmt:message key='create.description'/>:</form:label><br />
                         <form:textarea path="description" rows="5" cols="30" style="width:70%" /><br /><br />
 
-                        <span class="w3-large" style="padding-right: 10px"><fmt:message key='create_menu.avail'/>: </span><form:checkbox path="available" value="true"  class="w3-check"/><br />
+                        <span class="w3-large" style="padding-right: 10px"><fmt:message key='create.avail'/>: </span><form:checkbox path="available" value="true"  class="w3-check"/><br />
                         <p></p>
-                        <span class="w3-large" style="padding-right: 10px"><fmt:message key='create_menu.attachments'/></span><br />
+                        <span class="w3-large" style="padding-right: 10px"><fmt:message key='create.attachments'/></span><br />
                         <input type="file" name="attachments" multiple="multiple" /><br /><br />
-                        <input type="submit" value="<fmt:message key='create_menu.submit'/>"  class="w3-btn w3-left w3-round-large" style="background-color:#cbbeb5;" />
+                        <input type="submit" value="<fmt:message key='create.submit'/>"  class="w3-btn w3-left w3-round-large" style="background-color:#cbbeb5;" />
                     </form:form>
                 </div>
                 <br>
-                <a href="<c:url value="/menu" />" class="w3-btn w3-dark-grey w3-right w3-round-large w3-large"><fmt:message key='create_menu.backToMenuList'/></a>
+                <a href="<c:url value="/menu" />" class="w3-btn w3-dark-grey w3-right w3-round-large w3-large"><fmt:message key='create.backToMenuList'/></a>
             </div></div>
     </body>
 </html>

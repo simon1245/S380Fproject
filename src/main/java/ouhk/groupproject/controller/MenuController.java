@@ -140,11 +140,10 @@ public class MenuController {
 
     @GetMapping("/view/{food_Id}")
     public String view(@PathVariable("food_Id") long food_Id,
-            ModelMap model) {
+            ModelMap model, HttpServletRequest request) {
 
-        food_id_access id_access = new food_id_access();
-        id_access.setID(food_Id);
-
+        request.getSession().setAttribute("foodID",food_Id);
+        
         Menu menu = menuService.getMenu(food_Id);
         if (menu == null) {
             return "redirect:/menu";
@@ -208,10 +207,9 @@ public class MenuController {
         menuForm.setAvailable(menu.getAvailable());
 
         modelAndView.addObject("MenuForm", menuForm);
-
-        food_id_access id_access = new food_id_access();
-        id_access.setID(food_Id);
-
+        
+        request.getSession().setAttribute("food_id",food_Id);
+        
         return modelAndView;
     }
 
@@ -392,10 +390,9 @@ public class MenuController {
     }
 
     @GetMapping("/make_comment/{food_Id}")
-    public ModelAndView make_comment(@PathVariable("food_Id") long food_Id, ModelMap model) {
+    public ModelAndView make_comment(@PathVariable("food_Id") long food_Id, ModelMap model, HttpServletRequest request) {
         model.addAttribute("menu", menuService.getMenu(food_Id));
-        food_id_access id_access = new food_id_access();
-        id_access.setID(food_Id);
+        request.getSession().setAttribute("food_id",food_Id);
 
         return new ModelAndView("make_comment", "CommentForm", new CommentForm());
     }

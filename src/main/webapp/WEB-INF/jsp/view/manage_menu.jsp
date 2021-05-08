@@ -43,11 +43,11 @@
                 <c:choose>
 
                     <c:when test = "${language == 'en_US'}">  
-                        <a href="<c:url value="/menu/manage_menu/zh-HK" />" class="w3-right w3-button w3-medium">中文</a>
+                        <a href="<c:url value="/manage_menu/zh-HK" />" class="w3-right w3-button w3-medium">中文</a>
                     </c:when>
 
                     <c:when test = "${language == 'zh_HK'}">  
-                        <a href="<c:url value="/menu/manage_menu/en" />" class="w3-right w3-button w3-medium">English</a>
+                        <a href="<c:url value="/manage_menu/en" />" class="w3-right w3-button w3-medium">English</a>
                     </c:when>
 
                 </c:choose>

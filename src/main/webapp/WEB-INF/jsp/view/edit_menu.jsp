@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
-    <title><fmt:message key='edit_menu.titleHEAD'/>${menu.food_id} - <fmt:message key='create.title'/></title>
+    <title><fmt:message key='edit.titleHEAD'/>${menu.food_id} - <fmt:message key='create.title'/></title>
     <style>
         body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
         .w3-bar-block .w3-bar-item {padding:20px}
@@ -57,19 +57,19 @@
         <!-- content-->
         <div class="w3-container w3-white w3-padding-64 w3-large">
             <div class="w3-content">
-                <h1><fmt:message key='edit_menu.titleHEAD'/>${menu.name}</h1>
+                <h1><fmt:message key='edit.titleHEAD'/>${menu.name}</h1>
                 <div class="w3-row  w3-border w3-border-brown w3-container w3-padding-32">
                     <form:form method="POST" enctype="multipart/form-data"
                                modelAttribute="MenuForm">   
-                        <form:label path="foodname" class="w3-xlarge"><b><fmt:message key='edit_menu.foodName'/>:</b></form:label><br />
+                        <form:label path="foodname" class="w3-xlarge"><b><fmt:message key='edit.foodName'/>:</b></form:label><br />
                         <form:input type="text" path="foodname" class="w3-input" style="width:80%"/><br /><br />
-                        <form:label path="price" class="w3-xlarge"><b><fmt:message key='edit_menu.price'/>:</b></form:label><br />
+                        <form:label path="price" class="w3-xlarge"><b><fmt:message key='edit.price'/>:</b></form:label><br />
                         <form:input path="price" rows="5" cols="30" class="w3-input" style="width:80%" /><br /><br />
-                        <form:label path="description" class="w3-xlarge"><b><fmt:message key='edit_menu.description'/>:</b></form:label><br />
+                        <form:label path="description" class="w3-xlarge"><b><fmt:message key='edit.description'/>:</b></form:label><br />
                         <form:textarea path="description" rows="5" cols="30" style="width:80%" /><br /><br />
-                        <span class="w3-xlarge" style="margin-right: 20px"><b><fmt:message key='edit_menu.avail'/>:</b></span><form:checkbox path="available" value="true"  class="w3-check"/><br />
+                        <span class="w3-xlarge" style="margin-right: 20px"><b><fmt:message key='edit.avail'/>:</b></span><form:checkbox path="available" value="true"  class="w3-check"/><br />
                         <c:if test="${fn:length(menu.attachments) > 0}">
-                            <span class="w3-xlarge" style="margin-bottom: 20px"> <b><fmt:message key='edit_menu.attachments'/>:</b></span><br/>
+                            <span class="w3-xlarge" style="margin-bottom: 20px"> <b><fmt:message key='edit.attachments'/>:</b></span><br/>
                             <ul>
                                 <c:forEach items="${menu.attachments}" var="attachment">
                                     <li>
@@ -82,9 +82,9 @@
                             </ul>
                         </c:if>
                         <br>
-                        <span class="w3-xlarge" style="margin-bottom: 20px"><b><fmt:message key='edit_menu.addAttachment'/>:</b></span><br />
+                        <span class="w3-xlarge" style="margin-bottom: 20px"><b><fmt:message key='edit.addAttachment'/>:</b></span><br />
                         <input type="file" name="attachments" multiple="multiple"/><br/><br/>
-                        <input type="submit" value="<fmt:message key='edit_menu.save'/>"class="w3-btn w3-left w3-round-large" style="background-color:#cbbeb5;width:100px;"/><br/><br/>
+                        <input type="submit" value="<fmt:message key='edit.save'/>"class="w3-btn w3-left w3-round-large" style="background-color:#cbbeb5;width:100px;"/><br/><br/>
                     </form:form>
                 </div>
                 <br>

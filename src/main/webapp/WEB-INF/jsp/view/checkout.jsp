@@ -46,11 +46,11 @@
                 <c:choose>
 
                     <c:when test = "${language == 'en_US'}">  
-                        <a href="<c:url value="/viewcart/zh-HK" />" class="w3-right w3-button w3-medium">中文</a>
+                        <a href="<c:url value="/checkout/zh-HK" />" class="w3-right w3-button w3-medium">中文</a>
                     </c:when>
 
                     <c:when test = "${language == 'zh_HK'}">  
-                        <a href="<c:url value="/viewcart/en" />" class="w3-right w3-button w3-medium">English</a>
+                        <a href="<c:url value="/checkout/en" />" class="w3-right w3-button w3-medium">English</a>
                     </c:when>
 
                 </c:choose>
@@ -70,7 +70,7 @@
             <div class="w3-content">
                 <div class="w3-row" style="padding-top:10px">
                     <div class="w3-threequarter">
-                        <h1 ><fmt:message key='viewcart.Check out List'/></h1>
+                        <h1 ><fmt:message key='viewcart.Check_out_List'/></h1>
                     </div>
                 </div>
                 <br>
@@ -90,8 +90,8 @@
                                     <th class="w3-center">
                                         <fmt:message key='viewcart.quantity'/></th>
                                     <th class="w3-center"><fmt:message key='viewcart.price'/>  </th>
-                                    <th> </th>
-                                    <th>SubTotal</th>
+        
+                                    <th class="w3-center"><fmt:message key='viewcart.subtotal'/></th>
                                 </tr>
                                 <c:forEach items="${carts}" var="cart">
                                     <tr>
@@ -101,16 +101,18 @@
                                                 <c:set var="SubTotal" value="${cart.value*menu.price}" />    
                                                 <c:set var="Total_bill" value="${Total_bill + SubTotal}" />
                                                 <c:set var="Total_qty" value="${Total_qty + cart.value}" />
-                                                <td width="50%">${menu.name}   </td>
+                                                <td width="40%">${menu.name}   </td>
 
-                                                <td width="25%" class="w3-center">
+                                                <td width="20%" class="w3-center">
                                                     <a href="<c:url value="/menu/minustoCart"><c:param name="food_Id" value="${menu.food_id}" /></c:url>"><fmt:message key='menu.minus'/></a>
-                                                    ${cart.value} 
-                                                    <a href="<c:url value="/menu/addtoCart"><c:param name="food_Id" value="${menu.food_id}" /></c:url>"><fmt:message key='menu.add'/></a>
+                                                   ${cart.value} 
+                                                    <a href="<c:url value="/menu/addtoCart"><c:param name="food_Id" value="${menu.food_id}" /></c:url>">  <fmt:message key='menu.add'/></a>
+                                                    <br><a href="<c:url value="/menu/removefromCart"><c:param name="food_Id" value="${menu.food_id}" /></c:url>"><fmt:message key='viewcart.remove'/>
                                                     </td>
-                                                    <td><a href="<c:url value="/menu/removefromCart"><c:param name="food_Id" value="${menu.food_id}" /></c:url>"><fmt:message key='menu.removefromCart'/></td>
-                                                <td width="25%" class="w3-center">$${menu.price}  </td>
-                                                <td class="w3-center">$${SubTotal} </td>
+                                                    
+                                                <td width="20%" class="w3-center">$${menu.price}  </td>
+                                                <td width="20%" class="w3-center">$${SubTotal}  </td>
+                                                <td class="w3-center"></td>
                                             </c:if>
                                         </c:forEach>
 
@@ -122,7 +124,7 @@
                                     <table align="right" >
                                         <tr >
                                             <td align="right">
-                                                Total of items in your cart! :
+                                                <fmt:message key='viewcart.totalItem'/>
                                             </td>
                                             <td  align="center">
                                                 ${Total_qty} 
@@ -130,7 +132,7 @@
                                         </tr>
                                         <tr>
                                             <td  align="right">
-                                                The total bill is:
+                                                <fmt:message key='viewcart.bill'/>
                                             </td>
                                             <td align="center"> 
                                                 $${Total_bill}
@@ -144,8 +146,8 @@
                     </c:choose>            
                 </div>
                 <div class="w3-row w3-border w3-border-brown w3-container w3-padding-32">
-                    Your delivery address is  ${webUser.address} .<br><br>
-                    Your contact numbber is ${webUser.phone}.  <br><br>
+                    <fmt:message key='viewcart.address'/>  &nbsp  ${webUser.address} .<br><br>
+                    <fmt:message key='viewcart.contactNum'/> &nbsp ${webUser.phone} <br><br>
                     <form:form method="POST" >
                         <input name="submit" type="submit" value="Comfirm" class="w3-btn w3-dark-grey w3-right w3-round-large w3-large" style="background-color:#cbbeb5;width: 150px"/><br>
                     </form:form>

@@ -1,12 +1,13 @@
 package ouhk.groupproject.controller;
 
 import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class IndexController {
-
+    
     @GetMapping
     public String index() {
         return "redirect:/menu/";
@@ -46,24 +47,20 @@ public class IndexController {
     }
     
     @GetMapping("/view/en")
-    public String view_en(HttpSession httpSession) {
-        food_id_access id_access = new food_id_access();
+    public String view_en(HttpSession httpSession) {  
         httpSession.setAttribute("language", "en_US"); 
           
-        int id = (int)id_access.getFoodID();
-        String path = "redirect:/menu/view/" + id;
+        String path = "redirect:/menu/view/" + httpSession.getAttribute("foodID");
         
         return path;
     }
     
      @GetMapping("/view/zh-HK")
     public String view_zh_HK(HttpSession httpSession) {
-        food_id_access id_access = new food_id_access();
         httpSession.setAttribute("language", "zh_HK"); 
-        
-        int id = (int)id_access.getFoodID();
-        String path = "redirect:/menu/view/" + id;
-        
+         
+        String path = "redirect:/menu/view/" + httpSession.getAttribute("foodID");
+       
         return path;
     }
     
@@ -96,68 +93,50 @@ public class IndexController {
     }
     
      @GetMapping("/make_comment/en")
-    public String comment_en(HttpSession httpSession) {
-        food_id_access id_access = new food_id_access();
+    public String comment_en(HttpSession httpSession) {   
         httpSession.setAttribute("language", "en_US"); 
-          
-        int id = (int)id_access.getFoodID();
-        String path = "redirect:/menu/make_comment/" + id;
+
+        String path = "redirect:/menu/make_comment/" + httpSession.getAttribute("foodID");
         
         return path;
     }
     
      @GetMapping("/make_comment/zh-HK")
     public String comment_zh_HK(HttpSession httpSession) {
-        food_id_access id_access = new food_id_access();
-        httpSession.setAttribute("language", "zh_HK"); 
         
-        int id = (int)id_access.getFoodID();
-        String path = "redirect:/menu/make_comment/" + id;
+        httpSession.setAttribute("language", "zh_HK"); 
+    
+        String path = "redirect:/menu/make_comment/" + httpSession.getAttribute("foodID");
         
         return path;
     }
     
     @GetMapping("/edit/en")
     public String edit_en(HttpSession httpSession) {
-        food_id_access id_access = new food_id_access();
+
         httpSession.setAttribute("language", "en_US"); 
           
-        int id = (int)id_access.getFoodID();
-        String path = "redirect:/menu/edit/" + id;
+        String path = "redirect:/menu/edit/" + httpSession.getAttribute("foodID");
         
         return path;
     }
     
      @GetMapping("/edit/zh-HK")
     public String edit_zh_HK(HttpSession httpSession) {
-        food_id_access id_access = new food_id_access();
+        
         httpSession.setAttribute("language", "zh_HK"); 
         
-        int id = (int)id_access.getFoodID();
-        String path = "redirect:/menu/edit/" + id;
+        String path = "redirect:/menu/edit/" + httpSession.getAttribute("foodID");
         
         return path;
     }
-    
-      @GetMapping("/create/en")
-    public String create_en(HttpSession httpSession) {
-        httpSession.setAttribute("language", "en_US");     
-        
-        return "redirect:/menu/create";
-    }
-    
-     @GetMapping("/create/zh-HK")
-    public String create_zh_HK(HttpSession httpSession) {
-        httpSession.setAttribute("language", "zh_HK"); 
-        
-        return "redirect:/user/Register";
-    }
+
     
     @GetMapping("/Register/en")
     public String Register_en(HttpSession httpSession) {
         httpSession.setAttribute("language", "en_US");     
         
-        return "redirect:/menu/create";
+        return "redirect:/user/Register";
     }
     
      @GetMapping("/Register/zh-HK")
@@ -165,5 +144,101 @@ public class IndexController {
         httpSession.setAttribute("language", "zh_HK"); 
         
         return "redirect:/user/Register";
+    }
+    
+    @GetMapping("/edit_user/en")
+    public String editUser_en(HttpSession httpSession) {
+        
+        httpSession.setAttribute("language", "en_US"); 
+     
+        String path = "redirect:/user/edit_user/" + httpSession.getAttribute("user_name");
+        
+        return path;
+    }
+    
+     @GetMapping("/edit_user/zh-HK")
+    public String editUser_zh_HK(HttpSession httpSession) {
+         
+        httpSession.setAttribute("language", "zh_HK"); 
+     
+        String path = "redirect:/user/edit_user/" + httpSession.getAttribute("user_name");
+        
+        return path;
+    }
+    
+    @GetMapping("/edit_menu/en")
+    public String editMenu_en(HttpSession httpSession) {
+        
+        httpSession.setAttribute("language", "en_US"); 
+     
+        String path = "redirect:/menu/edit_menu/" + httpSession.getAttribute("food_id");
+        
+        return path;
+    }
+    
+     @GetMapping("/edit_menu/zh-HK")
+    public String editMenu_zh_HK(HttpSession httpSession) {
+         
+        httpSession.setAttribute("language", "zh_HK"); 
+     
+        String path = "redirect:/menu/edit_menu/" + httpSession.getAttribute("food_id");
+        
+        return path;
+    }
+    
+    @GetMapping("/checkout/en")
+    public String checkout_en(HttpSession httpSession) {
+        httpSession.setAttribute("language", "en_US");     
+        
+        return "redirect:/menu/viewcart/checkout";
+    }
+    
+     @GetMapping("/checkout/zh-HK")
+    public String checkout_zh_HK(HttpSession httpSession) {
+        httpSession.setAttribute("language", "zh_HK"); 
+        
+        return "redirect:/menu/viewcart/checkout";
+    }
+    
+    @GetMapping("/manage_menu/en")
+    public String manage_menu_en(HttpSession httpSession) {
+        httpSession.setAttribute("language", "en_US");     
+        
+        return "redirect:/menu/manage_menu";
+    }
+    
+     @GetMapping("/manage_menu/zh-HK")
+    public String manage_menu_zh_HK(HttpSession httpSession) {
+        httpSession.setAttribute("language", "zh_HK"); 
+        
+        return "redirect:/menu/manage_menu";
+    }
+    
+    @GetMapping("/manage_user/en")
+    public String manage_user_en(HttpSession httpSession) {
+        httpSession.setAttribute("language", "en_US");     
+        
+        return "redirect:/user/manage_user";
+    }
+    
+     @GetMapping("/manage_user/zh-HK")
+    public String manage_user_zh_HK(HttpSession httpSession) {
+        httpSession.setAttribute("language", "zh_HK"); 
+        
+        return "redirect:/user/manage_user";
+    }
+    
+    @GetMapping("/create_menu/en")
+    public String create_menu_en(HttpSession httpSession) {
+        httpSession.setAttribute("language", "en_US");     
+        
+        return "redirect:/menu/create_menu";
+    }
+    
+     @GetMapping("/create_menu/zh-HK")
+    public String create_menu_zh_HK(HttpSession httpSession) {
+        httpSession.setAttribute("language", "zh_HK"); 
+        
+        return "redirect:/menu/create_menu";
     }
 }
