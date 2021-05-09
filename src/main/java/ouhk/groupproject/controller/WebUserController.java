@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 import ouhk.groupproject.dao.WebUserRepository;
+import ouhk.groupproject.model.UserRole;
 import ouhk.groupproject.model.WebUser;
 
 @Controller
@@ -120,7 +121,7 @@ public class WebUserController {
     }
 
     @PostMapping("/Register")
-    public String create(Model model, Form form) throws IOException {
+    public String create(Model model, Form form ,Principal principal) throws IOException {
         if (form.password == null ? form.confirm_password == null : !(form.password.equals(form.confirm_password))) {
             form.password = "";
             form.confirm_password = "";
@@ -144,9 +145,12 @@ public class WebUserController {
                 form.getAddress()
         );
         webUserRepo.save(user);
-        for (String role : form.getRoles()) {
-            if ("ADMIN".equals(role)) {
-
+        
+        WebUser webUser = webUserRepo.findById(principal.getName()).orElse(null);
+        for (UserRole role : webUser.getRoles()) {
+            System.out.println("Role");
+            System.out.println(role.getRole());
+            if (role.getRole().equals("ROLE_ADMIN")) {
                 return "redirect:/user/manage_user";
             } else {
                 return "redirect:/login";
