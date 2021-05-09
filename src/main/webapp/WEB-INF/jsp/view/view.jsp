@@ -143,8 +143,8 @@
                                 <c:forEach  items="${comments}" var="comment">
                                     <tr>
                                         <th width="20%"># ${count} </td>
-                                        <td width="30%">${comment.username}</td>
-                                        <td width="50%"><i>${comment.detail}</i></td>
+                                        <td width="30%"><c:out value="${comment.username}" /></td>
+                                        <td width="50%"><i><c:out value="${comment.detail}" /></i></td>
                                         <td>
                                             <security:authorize access="hasRole('ADMIN') or ${pageContext.request.userPrincipal.name == comment.username}">
                                                 <a href="<c:url value="/menu/edit_comment/food_id=${menu.food_id}/Comment_id=${comment.id}" />"><fmt:message key='Edit'/></a><br>

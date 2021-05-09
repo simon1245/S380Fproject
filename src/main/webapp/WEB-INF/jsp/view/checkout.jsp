@@ -147,8 +147,8 @@
                     </c:choose>            
                 </div>
                 <div class="w3-row w3-border w3-border-brown w3-container w3-padding-32">
-                    <fmt:message key='viewcart.address'/>  &nbsp  ${webUser.address} .<br><br>
-                    <fmt:message key='viewcart.contactNum'/> &nbsp ${webUser.phone} <br><br>
+                    <fmt:message key='viewcart.address'/>  &nbsp <c:out value="${webUser.address}" /> .<br><br>
+                    <fmt:message key='viewcart.contactNum'/> &nbsp <c:out value="${webUser.phone}" /> <br><br>
                     <form:form method="POST" >
                         <input name="submit" type="submit" value="Comfirm" class="w3-btn w3-dark-grey w3-right w3-round-large w3-large" style="background-color:#cbbeb5;width: 150px"/><br>
                     </form:form>

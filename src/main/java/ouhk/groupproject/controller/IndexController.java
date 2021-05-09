@@ -261,4 +261,38 @@ public class IndexController {
         
         return path;
     }
+    
+    @GetMapping("/vieworders/en")
+    public String vieworders_en(HttpSession httpSession) {
+        httpSession.setAttribute("language", "en_US");     
+        
+        return "redirect:/menu/vieworders";
+    }
+    
+     @GetMapping("/vieworders/zh-HK")
+    public String vieworders_zh_HK(HttpSession httpSession) {
+        httpSession.setAttribute("language", "zh_HK"); 
+        
+        return "redirect:/menu/vieworders";
+    }
+    
+    @GetMapping("/order_information/en")
+    public String order_information_en(HttpSession httpSession) {
+        
+        httpSession.setAttribute("language", "en_US"); 
+     
+        String path = "redirect:/menu/vieworders/order_information/order_id=" + httpSession.getAttribute("order_id");
+        
+        return path;
+    }
+    
+     @GetMapping("/order_information/zh-HK")
+    public String order_information_zh_HK(HttpSession httpSession) {
+         
+        httpSession.setAttribute("language", "zh_HK"); 
+     
+        String path = "redirect:/menu/vieworders/order_information/order_id=" + httpSession.getAttribute("order_id");
+        
+        return path;
+    }
 }

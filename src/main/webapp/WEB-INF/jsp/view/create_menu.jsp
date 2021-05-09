@@ -64,9 +64,9 @@
                     <form:form method="POST" enctype="multipart/form-data"
                                modelAttribute="MenuForm">
                         <form:label path="foodname" class="w3-large"><fmt:message key='create.foodName'/>:</form:label><br />
-                        <form:input type="text" path="foodname" class="w3-input" style="width:70%"/><br /><br />
+                        <form:input type="text" path="foodname"   class="w3-input" style="width:70%"/><br /><br />
                         <form:label path="price" class="w3-large"><fmt:message key='create.price'/>:</form:label><br />
-                        <form:input path="price" rows="5" cols="30" class="w3-input" style="width:70%" /><br /><br />
+                        <form:input path="price" type="number" pattern="[0-9]*" rows="5"  cols="30" class="w3-input" style="width:70%" /><br /><br />
                         <form:label path="description" class="w3-large"><fmt:message key='create.description'/>:</form:label><br />
                         <form:textarea path="description" rows="5" cols="30" style="width:70%" /><br /><br />
 

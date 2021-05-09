@@ -47,11 +47,11 @@
                 <c:choose>
 
                     <c:when test = "${language == 'en_US'}">  
-                        <a href="<c:url value="/viewcart/zh-HK" />" class="w3-right w3-button w3-medium">中文</a>
+                        <a href="<c:url value="/order_information/zh-HK" />" class="w3-right w3-button w3-medium">中文</a>
                     </c:when>
 
                     <c:when test = "${language == 'zh_HK'}">  
-                        <a href="<c:url value="/viewcart/en" />" class="w3-right w3-button w3-medium">English</a>
+                        <a href="<c:url value="/order_information/en" />" class="w3-right w3-button w3-medium">English</a>
                     </c:when>
 
                 </c:choose>
@@ -112,7 +112,7 @@
                                 <td  align="right">
                                     <fmt:message key='viewcart.totalItem'/>
                                 </td>
-                                <td  align="center">
+                                <td  align="right">
                                     ${Total_qty} 
                                 </td>
                             </tr>
@@ -120,15 +120,15 @@
                                 <td align="right" RowSpan="2">
                                     <fmt:message key='viewcart.bill'/>
                                 </td>
-                                <td  align="center">
+                                <td  align="right">
                                     $${Total_bill}
                                 </td>
                             </tr>
                             <tr>
-                                <td  align="center">
+                                <td  align="right">
                                     <fmt:message key='viewcart.OrderTime:'/>
                                 </td>
-                                <td   align="center"> 
+                                <td   align="right"> 
                                     <fmt:formatDate pattern="hh:mm:ss dd-MM-yyyy" value="${order.order_time}" />
 
                                 </td>

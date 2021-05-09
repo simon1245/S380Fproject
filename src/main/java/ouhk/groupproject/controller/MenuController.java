@@ -278,6 +278,10 @@ public class MenuController {
             return "redirect:/menu/";
         }
 
+        Menu menu = menuService.getMenu(food_Id);
+        if(!menu.getAvailable())
+            return "redirect:/menu/";
+        
         HttpSession session = request.getSession();
         if (session.getAttribute("carts") == null) {
             session.setAttribute("carts", new Hashtable<>());
@@ -428,6 +432,9 @@ public class MenuController {
 
         model.addAttribute("order", ordersService.getOrder(order_id));
         model.addAttribute("orderedfoods", orderedFoodService.getOrderedFoods(order_id));
+        
+        request.getSession().setAttribute("order_id", order_id);
+        
         return ("order_information");
     }
 

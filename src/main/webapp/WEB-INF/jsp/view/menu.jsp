@@ -86,8 +86,9 @@
                         <c:otherwise>
                             <c:forEach items="${menus}" var="menu" varStatus="loop">
                                 <c:if test="${(loop.index) ==0 || (loop.index)%4==0}">
-                                    <div class="w3-row-padding w3-padding-16 w3-center">
+                                    <div class="w3-row-padding w3-padding-16 w3-center"> 
                                         <c:set var= "close" value= "${loop.index+3}" />
+                                                  
                                     </c:if>
                                     <div class="w3-quarter w3-cell">
                                         <c:set var= "count" value= "0" />
@@ -100,11 +101,11 @@
                                             </c:if>
                                         </c:forEach>
                                         <c:if test="${count==0}"> 
-                                            <img src=" " alt=""/>
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6d/Good_Food_Display_-_NCI_Visuals_Online.jpg" alt=""/>
                                         </c:if>
-                                        <h2><b class="w3-xlarge w3-text-brown">${menu.name}</b></h2>
-                                        <i class="w3-small w3-text-dark_grey">${menu.description}</i><p></p>
-                                        <b class="w3-large w3-text-brown ">HKD ${menu.price}</b><p></P>
+                                        <h2><b class="w3-xlarge w3-text-brown"><c:out value="${menu.name}" /></b></h2>
+                                        
+                                        <b class="w3-large w3-text-brown ">HKD &nbsp <c:out value="${menu.price}" /></b><p></P>
                                         <a href="<c:url value="/menu/view/${menu.food_id}" />" class=" w3-large w3-btn w3-dark-grey w3-round-large w3-center" style="margin-bottom:10px"><fmt:message key='menu.viewMore'/></a> 
                                         <br>
                                         <c:choose>

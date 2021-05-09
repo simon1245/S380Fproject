@@ -65,7 +65,7 @@
                         <form:label path="foodname" class="w3-xlarge"><b><fmt:message key='edit.foodName'/>:</b></form:label><br />
                         <form:input type="text" path="foodname" class="w3-input" style="width:80%"/><br /><br />
                         <form:label path="price" class="w3-xlarge"><b><fmt:message key='edit.price'/>:</b></form:label><br />
-                        <form:input path="price" rows="5" cols="30" class="w3-input" style="width:80%" /><br /><br />
+                        <form:input path="price" type="number" pattern="[0-9]*" rows="5" cols="30" class="w3-input" style="width:80%" /><br /><br />
                         <form:label path="description" class="w3-xlarge"><b><fmt:message key='edit.description'/>:</b></form:label><br />
                         <form:textarea path="description" rows="5" cols="30" style="width:80%" /><br /><br />
                         <span class="w3-xlarge" style="margin-right: 20px"><b><fmt:message key='edit.avail'/>:</b></span><form:checkbox path="available" value="true"  class="w3-check"/><br />
