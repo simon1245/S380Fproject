@@ -130,7 +130,7 @@ public class WebUserController {
             return "Register";
         }
         if (form.password.length() < 8) {
-            System.out.println("asdad");
+            
             form.password = "";
             form.confirm_password = "";
             form.error_msg = "Your password should have at least 8 characters ";
@@ -146,10 +146,13 @@ public class WebUserController {
         );
         webUserRepo.save(user);
         
+        if(principal == null){
+            return "redirect:/login";
+        } 
+        
         WebUser webUser = webUserRepo.findById(principal.getName()).orElse(null);
         for (UserRole role : webUser.getRoles()) {
-            System.out.println("Role");
-            System.out.println(role.getRole());
+            
             if (role.getRole().equals("ROLE_ADMIN")) {
                 return "redirect:/user/manage_user";
             } else {
@@ -245,7 +248,7 @@ public class WebUserController {
             return "passwordchange";
         }
         if (form.password.length() < 8) {
-            System.out.println("asdad");
+            
             form.password = "";
             form.confirm_password = "";
             form.error_msg = "Your password should have at least 8 characters ";

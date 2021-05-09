@@ -68,8 +68,8 @@
                         <c:if test="${webUser.error_msg != null}">
                             Error Messages: ${webUser.error_msg}<br><br>
                         </c:if>
-                        <form:label path="username"  class="w3-large"><span class="star">*</span><fmt:message key='register.username'/>: </form:label><br/>
-                        <form:input type="text" path="username" readonly="true"  required="required"  class="w3-input" style="width:70%"  /><br/><br/>
+                        <form:label path="username"  class="w3-large"><span class="star">*</span><fmt:message key='register.username'/>: &nbsp <c:out value="${webUser.username}" /> </form:label><br/>
+                        <br>
                         <form:label path="password"  class="w3-large"><span class="star">*</span><fmt:message key='register.password'/>:</form:label><br/>
                         <form:input type="password"  path="password" readonly="true" required="required"   placeholder="Please input at least 8 character password" class="w3-input" style="width:70%"  />
                         <u><a href="<c:url value="/user/edit_user/passwordchange/${webUser.username}" />" ><fmt:message key='ChangePassword'/></a></u><br/><br/> 

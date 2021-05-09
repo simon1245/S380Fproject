@@ -67,14 +67,14 @@
                 </security:authorize>
                 <div class="w3-row  w3-border w3-border-brown w3-container w3-padding-32">
                     <form:form method="POST" enctype="multipart/form-data"
-                               modelAttribute="webUser">
+                               modelAttribute="webUser" autocomplete="nope">
                         <c:if test="${webUser.error_msg != null}">
                             Error Messages: ${webUser.error_msg}<br><br>
                         </c:if>
                         <form:label path="username"  class="w3-large"><span class="star">*</span><fmt:message key='register.username'/>: </form:label><br/>
-                        <form:input type="text" path="username"  required="required"  class="w3-input" style="width:70%"  /><br/><br/>
+                        <form:input type="text" path="username"  required="required"  class="w3-input" style="width:70%" autocomplete="new-User Name"  /><br/><br/>
                         <form:label path="password"  class="w3-large"><span class="star">*</span><fmt:message key='register.password'/>:</form:label><br/>
-                        <form:input type="password"  path="password" required="required"   placeholder="Please input at least 8 character password" class="w3-input" style="width:70%"  /><br/><br/> 
+                        <form:input type="password"  path="password" autocomplete="new-password" required="required"   placeholder="Please input at least 8 character password" class="w3-input" style="width:70%"  /><br/><br/> 
                         <form:label path="confirm_password"  class="w3-large"><span class="star">*</span><fmt:message key='register.confirm_password'/>:</form:label><br/>
                         <form:input type="password"  path="confirm_password" required="required"  class="w3-input" style="width:70%"  /><br/><br/> 
                         <form:label path="full_name"  class="w3-large"><span class="star">*</span><fmt:message key='register.full_name'/>:</form:label><br/>

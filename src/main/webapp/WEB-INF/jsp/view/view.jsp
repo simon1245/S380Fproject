@@ -134,20 +134,21 @@
                         <c:otherwise>
                             <table class="w3-table  w3-bordered w3-hoverable">
                                 <tr class="w3-large ">
-                                    <th width="10%"><fmt:message key='view.comment'/> </th>
+                                    <th width="20%"><fmt:message key='view.comment'/> </th>
                                     <th width="30%"><fmt:message key='view.commentedBy'/></th>
-                                    <th  width="60%"><fmt:message key='view.detail'/></th>
-                                    <th> </th>
+                                    <th  width="30%"><fmt:message key='view.detail'/></th>
+                                    <th width="20%"> </th>
                                 </tr>
                                 <c:set var= "count" value= "0" />
                                 <c:forEach  items="${comments}" var="comment">
                                     <tr>
                                         <th width="20%"># ${count} </td>
                                         <td width="30%"><c:out value="${comment.username}" /></td>
-                                        <td width="50%"><i><c:out value="${comment.detail}" /></i></td>
-                                        <td>
+                                        <td width="30%"><i><c:out value="${comment.detail}" /></i></td>
+                                        <td width="20%">
                                             <security:authorize access="hasRole('ADMIN') or ${pageContext.request.userPrincipal.name == comment.username}">
                                                 <a href="<c:url value="/menu/edit_comment/food_id=${menu.food_id}/Comment_id=${comment.id}" />"><fmt:message key='Edit'/></a><br>
+                                                
                                                 <a href="<c:url value="/menu/delete_comment/food_id=${menu.food_id}/Comment_id=${comment.id}" />"><fmt:message key='Delete'/></a> 
                                             </security:authorize>
                                         </td>

@@ -24,10 +24,17 @@
                 <c:choose>
                     <c:when test="${pageContext.request.userPrincipal.name != null}"> 
                         <c:url var="logoutUrl" value="/logout"/>
+    
                         <form action="${logoutUrl}" method="post">
                             <input type="submit" value="Log out" class="w3-bar-item w3-button w3-right w3-dark-grey w3-opacity w3-medium" />
+                            
+                            
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
+                        
+                        <security:authorize access="hasRole('USER') or hasRole('ADMIN')">
+                            <a href="<c:url value="/user/edit_user/${pageContext.request.userPrincipal.name}" />"class="w3-bar-item w3-button w3-right w3-medium"><u>${pageContext.request.userPrincipal.name}</u></a>
+                                </security:authorize>
                         <security:authorize access="hasRole('ADMIN')">
                             <a href="<c:url value="/user/manage_user" />"class="w3-bar-item w3-button w3-right w3-medium"><fmt:message key='manageUser'/></a>
                             <a href="<c:url value="/menu/manage_menu" />"class="w3-bar-item w3-button w3-right w3-medium"><fmt:message key='manageMenu'/></a>

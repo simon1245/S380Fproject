@@ -67,7 +67,7 @@
             <div class="w3-content">
                 <div class="w3-row" style="padding-top:24px">
                     <div class="w3-threequarter">
-                        <h1 ><fmt:message key='menu.title'/></h1>
+                        <h1 ><fmt:message key='manage_user.title'/></h1>
                     </div>
                     <div class="w3-quarter">
                         <a  style="margin-top:15px" href="<c:url value="/user/Register" />" class="w3-btn w3-right w3-round-large w3-brown" ><fmt:message key='manage.create_a_user'/></a>

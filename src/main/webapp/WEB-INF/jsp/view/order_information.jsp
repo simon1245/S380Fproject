@@ -125,7 +125,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td  align="right">
+                                <td  align="right"  RowSpan="2">
                                     <fmt:message key='viewcart.OrderTime:'/>
                                 </td>
                                 <td   align="right"> 
