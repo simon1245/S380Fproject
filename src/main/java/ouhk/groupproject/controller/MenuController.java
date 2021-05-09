@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Date;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
@@ -24,7 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 import ouhk.groupproject.dao.CommentRepository;
-import ouhk.groupproject.dao.MenuRepository;
+import ouhk.groupproject.dao.OrdersRepository;
 import ouhk.groupproject.dao.WebUserRepository;
 import ouhk.groupproject.exception.AttachmentNotFound;
 import ouhk.groupproject.exception.CommentNotFound;
@@ -33,10 +35,14 @@ import ouhk.groupproject.model.Attachment;
 import ouhk.groupproject.model.Menu;
 import ouhk.groupproject.model.Base64image;
 import ouhk.groupproject.model.Comment;
+import ouhk.groupproject.model.OrderedFood;
+import ouhk.groupproject.model.Orders;
 import ouhk.groupproject.service.MenuService;
 import ouhk.groupproject.service.AttachmentService;
 import ouhk.groupproject.service.CommentService;
+import ouhk.groupproject.service.OrderedFoodService;
 import ouhk.groupproject.view.DownloadingView;
+import ouhk.groupproject.service.OrdersService;
 
 @Controller
 @RequestMapping("/menu")
@@ -44,6 +50,12 @@ public class MenuController {
 
     @Autowired
     private MenuService menuService;
+
+    @Autowired
+    private OrdersService ordersService;
+
+    @Autowired
+    private OrderedFoodService orderedFoodService;
 
     @Autowired
     private CommentService commentService;
@@ -56,6 +68,9 @@ public class MenuController {
 
     @Resource
     WebUserRepository webUserRepo;
+
+    @Resource
+    OrdersRepository ordersRepo;
 
     @GetMapping("")
     public String list(ModelMap model) {
@@ -369,13 +384,51 @@ public class MenuController {
     }
 
     @PostMapping("/viewcart/checkout")
-    public String checkout(HttpServletRequest request)
+    public String checkout(HttpServletRequest request, Principal principal)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        if (session.getAttribute("carts") == null) {
+            session.setAttribute("carts", new Hashtable<>());
+            return "redirect:/menu/viewcart/";
+        }
 
-        System.out.println("go1");
+        @SuppressWarnings("unchecked")
+        Map<Integer, Integer> carts = (Map<Integer, Integer>) session.getAttribute("carts");
+        List<OrderedFood> orderedFoods = new ArrayList<OrderedFood>();
+
+        int cost = 0;
+        Iterator hmIterator = carts.entrySet().iterator();
+        while (hmIterator.hasNext()) {
+            Map.Entry mapElement = (Map.Entry) hmIterator.next();
+
+            Menu menu = menuService.getMenu((int) mapElement.getKey());
+            cost += menu.getPrice();
+            OrderedFood orderedFood = new OrderedFood();
+            orderedFood.setFood_id(Long.valueOf((int) mapElement.getKey()));
+            orderedFood.setQuantity((int) mapElement.getValue());
+            orderedFood.setName(menu.getName());
+            orderedFood.setPrice(menu.getPrice());
+            orderedFoods.add(orderedFood);
+
+        }
+
+        long ordered_Id = ordersService.createOrder(principal.getName(), cost, new Date(System.currentTimeMillis()), orderedFoods);
         request.getSession().removeAttribute("carts");
-        System.out.println("go2");
         return "redirect:/menu/";
+    }
+
+    @GetMapping("/vieworders")
+    public String vireorder(ModelMap model) {
+        model.addAttribute("orders", ordersService.getOrders());
+        return ("vieworder");
+    }
+
+    @GetMapping("/vieworders/order_information/order_id={order_id}")
+    public String vireorder_more(ModelMap model, @PathVariable("order_id") long order_id
+    ) {
+        model.addAttribute("orders", ordersService.getOrder(order_id));
+        model.addAttribute("orderedfoods", orderedFoodService.getOrderedFoods(order_id));
+        return ("order_information");
     }
 
     public static class CommentForm {
@@ -468,9 +521,9 @@ public class MenuController {
 
             return "redirect:/menu/view/" + food_id;
         }
-       
-        commentService.deleteComment(food_id,id);
-        
+
+        commentService.deleteComment(food_id, id);
+
         return "redirect:/menu/view/" + food_id;
     }
 

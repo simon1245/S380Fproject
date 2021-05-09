@@ -1,6 +1,9 @@
 Drop table Attachment;
 Drop table Comment;
 Drop table Foods;
+Drop table OrderedFood;
+Drop table Orders;
+
 
 CREATE TABLE Foods (
     food_id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
@@ -29,6 +32,24 @@ CREATE TABLE Comment (
     FOREIGN KEY (food_id) REFERENCES Foods(food_id)
 );
 
+CREATE TABLE Orders (
+    id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
+    username VARCHAR(50) DEFAULT NULL,
+    order_time TIMESTAMP ,
+    Cost INTEGER ,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE OrderedFood (
+    id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
+    name VARCHAR(255) NOT NULL,
+    order_id INTEGER DEFAULT NULL,
+    food_id INTEGER DEFAULT NULL,
+    price INTEGER DEFAULT NULL,
+    quantity INTEGER DEFAULT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (order_id) REFERENCES Orders(id)
+);
 
 INSERT INTO Foods(name,description,available,price) VALUES ('Carbonara', 'This Creamy Carbonara recipe is a plate of heavenly, creamy pasta. Silky spaghetti with crispy pancetta in a super creamy and cheesy sauce.',true,100);
 INSERT INTO Foods(name,description,available,price) VALUES ('New York Strip', 'Well marbled, full bodied and rich with beefy flavor, a New York Strip is firm and tender when it comes to texture, flavor and fat. Cut from the shorter side of the beef loin, the muscles in this area do little work, and that spells tenderness every time.',true,150);
