@@ -45,7 +45,7 @@
                        
         <intercept-url pattern="/user/manage_user/**" access="hasRole('ADMIN')" /> 
         <intercept-url pattern="/user/delete/**" access="hasRole('ADMIN')" /> 
-        <intercept-url pattern="/user/edit_user/**" access="hasRole('ADMIN')" /> 
+        <intercept-url pattern="/user/edit_user/**" access="hasRole('ADMIN') or hasRole('USER')" /> 
         
         <form-login login-page="/login" authentication-failure-url="/login?error" />
         <logout logout-success-url="/login?logout"

@@ -90,9 +90,9 @@
                                 </tr>
                                 <c:forEach items="${webUsers}" var="user">
                                     <tr>
-                                        <td>${user.username}</td>
-                                        <td>${user.full_name}</td>
-                                        <td>${user.phone}</td>
+                                        <td><c:out value="${user.username}" /></td>
+                                        <td><c:out value="${user.full_name}" /></td>
+                                        <td><c:out value="${user.phone}" /></td>
                                         <td>
                                             <c:forEach items="${user.roles}" var="role" varStatus="status">
                                                 <c:if test="${!status.first}">, </c:if>
