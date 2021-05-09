@@ -241,4 +241,24 @@ public class IndexController {
         
         return "redirect:/menu/create_menu";
     }
+    
+    @GetMapping("/passwordchange/en")
+    public String passwordchange_en(HttpSession httpSession) {
+        
+        httpSession.setAttribute("language", "en_US"); 
+     
+        String path = "redirect:/user/edit_user/passwordchange/" + httpSession.getAttribute("user_name");
+        
+        return path;
+    }
+    
+     @GetMapping("/passwordchange/zh-HK")
+    public String passwordchange_zh_HK(HttpSession httpSession) {
+         
+        httpSession.setAttribute("language", "zh_HK"); 
+     
+        String path = "redirect:/user/edit_user/passwordchange/" + httpSession.getAttribute("user_name");
+        
+        return path;
+    }
 }

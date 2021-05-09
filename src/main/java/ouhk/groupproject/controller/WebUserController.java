@@ -231,8 +231,8 @@ public class WebUserController {
         Form.setAddress(webUser.getAddress());
         modelAndView.addObject("webUser", Form);
 
-        request.getSession().setAttribute("user_name", webUser.getUsername());
-
+        request.getSession().setAttribute("user_name", webUser.getUsername());  
+        
         return modelAndView;
     }
 
