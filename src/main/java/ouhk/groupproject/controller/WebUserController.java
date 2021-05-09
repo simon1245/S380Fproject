@@ -182,6 +182,10 @@ public class WebUserController {
         Form.setFull_name(webUser.getFull_name());
         Form.setPhone(webUser.getPhone());
         Form.setAddress(webUser.getAddress());
+
+        String[] roles = new String[]{webUser.getRoles().get(0).getRole()};
+        Form.setRoles(roles);
+        
         modelAndView.addObject("webUser", Form);
 
         request.getSession().setAttribute("user_name", webUser.getUsername());
@@ -209,7 +213,7 @@ public class WebUserController {
         }
         return null;
     }
-    
+
     @GetMapping("/edit_user/passwordchange/{username}")
     public ModelAndView passwordchange(@PathVariable("username") String username,
             Principal principal, HttpServletRequest request) {
@@ -231,9 +235,9 @@ public class WebUserController {
 
         return modelAndView;
     }
-    
+
     @PostMapping("/edit_user/passwordchange/{username}")
-    public String passwordchange(Model model, Form form,@PathVariable("username") String username) throws IOException {
+    public String passwordchange(Model model, Form form, @PathVariable("username") String username) throws IOException {
         if (form.password == null ? form.confirm_password == null : !(form.password.equals(form.confirm_password))) {
             form.password = "";
             form.confirm_password = "";
@@ -249,12 +253,12 @@ public class WebUserController {
             model.addAttribute("webUser", form);
             return "passwordchange";
         }
-        
+
         WebUser webUser = webUserRepo.findById(username).orElse(null);
-        webUser.setPassword("{noop}"+form.password);
+        webUser.setPassword("{noop}" + form.password);
 
         webUserRepo.save(webUser);
-                return "redirect:/user/edit_user/"+username;
-            
+        return "redirect:/user/edit_user/" + username;
+
     }
 }

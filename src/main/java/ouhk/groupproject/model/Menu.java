@@ -36,7 +36,6 @@ public class Menu {
 
     @OneToMany(mappedBy = "menu", fetch = FetchType.EAGER,
             cascade = CascadeType.ALL, orphanRemoval = true)
-    @Fetch(FetchMode.SUBSELECT)
     private List<Comment> comments = new ArrayList<>();
 
     public long getFood_id() {
@@ -87,11 +86,6 @@ public class Menu {
         this.attachments = attachments;
     }
 
-    public void deleteAttachment(Attachment attachment) {
-        attachment.setMenu(null);
-        this.attachments.remove(attachment);
-    }
-
     public List<Comment> getComments() {
         return comments;
     }
@@ -100,5 +94,14 @@ public class Menu {
         this.comments = comments;
     }
 
-    
+    public void deleteAttachment(Attachment attachment) {
+        attachment.setMenu(null);
+        this.attachments.remove(attachment);
+    }
+
+    public void deleteComment(Comment comment) {
+        comment.setMenu(null);
+        this.comments.remove(comment);
+    }
+
 }

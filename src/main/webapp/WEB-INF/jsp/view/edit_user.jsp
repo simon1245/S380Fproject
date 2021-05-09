@@ -80,8 +80,20 @@
                         <form:input type="text"  path="address"  required="required" placeholder="Please enter a valid address"  class="w3-input" style="width:70%"  /><br/><br/>
                         <security:authorize access="hasRole('ADMIN')">
                             <form:label path="roles" class="w3-large"><fmt:message key='register.roles'/>:</form:label><br/>
-                            <form:checkbox path="roles" value="ROLE_USER" checked="true" class="w3-check"/><fmt:message key='register.role_user'/>
-                            <form:checkbox path="roles" value="ROLE_ADMIN"  class="w3-check" style="margin-left:10px"/><fmt:message key='register.role_admin'/>
+
+                            <c:forEach items="${webUser.roles}" var ="role">
+                                <c:choose>
+                                    <c:when test="${role == 'ROLE_ADMIN'}">
+                                        <form:radiobutton  path="roles" value="ROLE_USER"   class="w3-check"/><fmt:message key='register.role_user'/>
+                                        <form:radiobutton  path="roles" value="ROLE_ADMIN"   checked="checked"  class="w3-check" style="margin-left:10px"/><fmt:message key='register.role_admin'/>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <form:radiobutton  path="roles" value="ROLE_USER"  checked="checked" class="w3-check"/><fmt:message key='register.role_user'/>
+                                        <form:radiobutton  path="roles" value="ROLE_ADMIN"  class="w3-check" style="margin-left:10px"/><fmt:message key='register.role_admin'/>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
+
                         </security:authorize>   
                         <security:authorize access="!hasRole('ADMIN')">
                             <form:checkbox style="display:none" path="roles" value="ROLE_USER" checked="true"   class="w3-check"/>

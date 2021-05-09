@@ -19,7 +19,6 @@ CREATE TABLE user_roles (
 );
 
 INSERT INTO users VALUES ('keith', '{noop}keithpw', 'keith Y','91234567','Hong Kong');
-INSERT INTO user_roles(username, role) VALUES ('keith', 'ROLE_USER');
 INSERT INTO user_roles(username, role) VALUES ('keith', 'ROLE_ADMIN');
 
 INSERT INTO users VALUES ('vanessa', '{noop}vanessapw', 'vanessa B','61234867','Hong Kong');

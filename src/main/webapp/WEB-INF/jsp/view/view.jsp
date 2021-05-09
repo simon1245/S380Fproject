@@ -136,6 +136,7 @@
                                     <th width="10%"><fmt:message key='view.comment'/> </th>
                                     <th width="30%"><fmt:message key='view.commentedBy'/></th>
                                     <th  width="60%"><fmt:message key='view.detail'/></th>
+                                    <th> </th>
                                 </tr>
                                 <c:set var= "count" value= "0" />
                                 <c:forEach  items="${comments}" var="comment">
@@ -143,7 +144,14 @@
                                         <th width="20%"># ${count} </td>
                                         <td width="30%">${comment.username}</td>
                                         <td width="50%"><i>${comment.detail}</i></td>
+                                        <td>
+                                            <security:authorize access="hasRole('ADMIN') or ${pageContext.request.userPrincipal.name == comment.username}">
+                                                <a href="<c:url value="/menu/edit_comment/food_id=${menu.food_id}/Comment_id=${comment.id}" />"><fmt:message key='Edit'/></a><br>
+                                                <a href="<c:url value="/menu/delete_comment/food_id=${menu.food_id}/Comment_id=${comment.id}" />"><fmt:message key='Delete'/></a> 
+                                            </security:authorize>
+                                        </td>
                                     </tr>  
+                                    <c:set var= "count" value= "${count+1}" />
                                 </c:forEach>
                             </table>     
                         </c:otherwise>

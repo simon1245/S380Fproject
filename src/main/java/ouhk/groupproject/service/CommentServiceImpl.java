@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ouhk.groupproject.dao.CommentRepository;
 import ouhk.groupproject.dao.MenuRepository;
 import ouhk.groupproject.dao.WebUserRepository;
+import ouhk.groupproject.exception.AttachmentNotFound;
+import ouhk.groupproject.exception.CommentNotFound;
 import ouhk.groupproject.model.Comment;
 import ouhk.groupproject.model.Menu;
 
@@ -42,8 +44,6 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = new Comment();
         comment.setFoodid(food_id);
         comment.setUsername(username);
-        System.out.println("user__name");
-        System.out.println(username);
 
         comment.setMenu(menuRepo.findById(food_id).orElse(null));
         comment.setDetail(detail);
@@ -51,9 +51,44 @@ public class CommentServiceImpl implements CommentService {
         Menu updatedMenu = menuRepo.findById(food_id).orElse(null);
 
         updatedMenu.getComments().add(comment);
-        Comment savedComment = commentRepo.save(comment);
+        Menu SavedMenu =  menuRepo.save(updatedMenu);
 
-        return savedComment.getId();
+        return SavedMenu.getFood_id();
+    }
+      
+    
+    
+
+    @Override
+    @Transactional(rollbackFor = CommentNotFound.class)
+    public void updateMenu(long id, String detail)
+            throws IOException, CommentNotFound {
+        Comment updatedComment = commentRepo.findById(id).orElse(null);
+        if (updatedComment == null) {
+            throw new CommentNotFound();
+        }
+
+        updatedComment.setDetail(detail);
+        commentRepo.save(updatedComment);
+    }
+
+    @Override
+    @Transactional(rollbackFor = CommentNotFound.class)
+    public void deleteComment(long food_id, long id) throws CommentNotFound {
+        Comment deletedComment = commentRepo.findById(id).orElse(null);
+        if (deletedComment == null) {
+            throw new CommentNotFound();
+        }
+
+        Menu menu = menuRepo.findById(food_id).orElse(null);
+        for (Comment comment : menu.getComments()) {
+            if (comment.getId()== id) {
+                menu.deleteComment(comment);
+                menuRepo.save(menu);
+                return;
+            }
+        }
+        throw new CommentNotFound();        
     }
 
 }

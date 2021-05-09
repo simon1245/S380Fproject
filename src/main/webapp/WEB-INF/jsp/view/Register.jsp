@@ -84,8 +84,8 @@
                         <form:input type="text"  path="address"  required="required" placeholder="Please input a valid address"  class="w3-input" style="width:70%"  /><br/><br/>
                         <security:authorize access="hasRole('ADMIN')">
                             <form:label path="roles" class="w3-large"><fmt:message key='register.roles'/>:</form:label><br/>
-                            <form:checkbox path="roles" value="ROLE_USER" checked="true" class="w3-check"/><fmt:message key='register.role_user'/>
-                            <form:checkbox path="roles" value="ROLE_ADMIN"  class="w3-check" style="margin-left:10px"/><fmt:message key='register.role_admin'/>
+                            <form:radiobutton  path="roles" value="ROLE_USER"  checked="checked" class="w3-check"/><fmt:message key='register.role_user'/>
+                            <form:radiobutton  path="roles" value="ROLE_ADMIN"  class="w3-check" style="margin-left:10px"/><fmt:message key='register.role_admin'/>
                         </security:authorize>   
                         <security:authorize access="!hasRole('ADMIN')">
                             <form:checkbox style="display:none" path="roles" value="ROLE_USER" checked="true"   class="w3-check"/>

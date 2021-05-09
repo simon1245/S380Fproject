@@ -79,7 +79,6 @@ public class MenuServiceImpl implements MenuService {
         menu.setAvailable(available);
 
         for (MultipartFile filePart : attachments) {
-            System.out.println("Test0");
             Attachment menu_attachment = new Attachment();
             menu_attachment.setName(filePart.getOriginalFilename());
             menu_attachment.setMimeContentType(filePart.getContentType());

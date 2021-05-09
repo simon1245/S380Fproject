@@ -23,18 +23,19 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
+import ouhk.groupproject.dao.CommentRepository;
+import ouhk.groupproject.dao.MenuRepository;
 import ouhk.groupproject.dao.WebUserRepository;
 import ouhk.groupproject.exception.AttachmentNotFound;
+import ouhk.groupproject.exception.CommentNotFound;
 import ouhk.groupproject.exception.MenuNotFound;
 import ouhk.groupproject.model.Attachment;
 import ouhk.groupproject.model.Menu;
 import ouhk.groupproject.model.Base64image;
 import ouhk.groupproject.model.Comment;
-import ouhk.groupproject.model.WebUser;
 import ouhk.groupproject.service.MenuService;
 import ouhk.groupproject.service.AttachmentService;
 import ouhk.groupproject.service.CommentService;
-import ouhk.groupproject.service.WebUserService;
 import ouhk.groupproject.view.DownloadingView;
 
 @Controller
@@ -51,8 +52,10 @@ public class MenuController {
     private AttachmentService attachmentService;
 
     @Resource
+    CommentRepository commentRepo;
+
+    @Resource
     WebUserRepository webUserRepo;
-    
 
     @GetMapping("")
     public String list(ModelMap model) {
@@ -142,8 +145,8 @@ public class MenuController {
     public String view(@PathVariable("food_Id") long food_Id,
             ModelMap model, HttpServletRequest request) {
 
-        request.getSession().setAttribute("foodID",food_Id);
-        
+        request.getSession().setAttribute("foodID", food_Id);
+
         Menu menu = menuService.getMenu(food_Id);
         if (menu == null) {
             return "redirect:/menu";
@@ -207,9 +210,9 @@ public class MenuController {
         menuForm.setAvailable(menu.getAvailable());
 
         modelAndView.addObject("MenuForm", menuForm);
-        
-        request.getSession().setAttribute("food_id",food_Id);
-        
+
+        request.getSession().setAttribute("food_id", food_Id);
+
         return modelAndView;
     }
 
@@ -392,16 +395,83 @@ public class MenuController {
     @GetMapping("/make_comment/{food_Id}")
     public ModelAndView make_comment(@PathVariable("food_Id") long food_Id, ModelMap model, HttpServletRequest request) {
         model.addAttribute("menu", menuService.getMenu(food_Id));
-        request.getSession().setAttribute("food_id",food_Id);
+        request.getSession().setAttribute("food_id", food_Id);
 
         return new ModelAndView("make_comment", "CommentForm", new CommentForm());
     }
 
     @PostMapping("/make_comment/{food_Id}")
     public String make_comment(CommentForm commentForm, Principal principal, @PathVariable("food_Id") long food_Id) throws IOException {
-        long Commentid = commentService.createComment(principal.getName(),
-                commentForm.getDetail(), food_Id);
+        commentService.createComment(principal.getName(), commentForm.getDetail(), food_Id);
         return "redirect:/menu/view/" + food_Id;
+    }
+
+    @GetMapping("/edit_comment/food_id={food_Id}/Comment_id={id}")
+    public ModelAndView edit_comment(
+            @PathVariable("food_Id") long food_Id,
+            @PathVariable("id") long id,
+            Principal principal,
+            HttpServletRequest request) {
+
+        Comment comment = commentRepo.findById(id).orElse(null);
+        if (comment == null
+                || !((request.isUserInRole("ROLE_ADMIN"))
+                || (principal.getName() == null ? comment.getUsername() == null : principal.getName().equals(comment.getUsername())))) {
+
+            return new ModelAndView(new RedirectView("/menu", true));
+        }
+
+        ModelAndView model = new ModelAndView("edit_comment");
+        model.addObject("menu", menuService.getMenu(food_Id));
+        request.getSession().setAttribute("food_id", food_Id);
+
+        CommentForm commentForm = new CommentForm();
+        commentForm.setDetail(comment.getDetail());
+
+        model.addObject("CommentForm", commentForm);
+        return model;
+    }
+
+    @PostMapping("/edit_comment/food_id={food_Id}/Comment_id={id}")
+    public String edit_comment(
+            CommentForm commentForm,
+            Principal principal,
+            @PathVariable("food_Id") long food_Id,
+            @PathVariable("id") long id,
+            HttpServletRequest request) throws IOException, CommentNotFound {
+
+        Comment comment = commentRepo.findById(id).orElse(null);
+        if (comment == null
+                || !((request.isUserInRole("ROLE_ADMIN"))
+                || (principal.getName() == null ? comment.getUsername() == null : principal.getName().equals(comment.getUsername())))) {
+
+            return "redirect:/menu/view/" + food_Id;
+        }
+
+        commentService.updateMenu(id, commentForm.getDetail());
+        return "redirect:/menu/view/" + food_Id;
+
+    }
+
+    @GetMapping("/delete_comment/food_id={food_Id}/Comment_id={id}")
+    public String delete_comment(
+            Principal principal,
+            HttpServletRequest request,
+            @PathVariable("food_Id") long food_id,
+            @PathVariable("id") long id
+    )
+            throws CommentNotFound {
+        Comment comment = commentRepo.findById(id).orElse(null);
+        if (comment == null
+                || !((request.isUserInRole("ROLE_ADMIN"))
+                || (principal.getName() == null ? comment.getUsername() == null : principal.getName().equals(comment.getUsername())))) {
+
+            return "redirect:/menu/view/" + food_id;
+        }
+       
+        commentService.deleteComment(food_id,id);
+        
+        return "redirect:/menu/view/" + food_id;
     }
 
 }
