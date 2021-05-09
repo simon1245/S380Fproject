@@ -67,6 +67,7 @@
             <h1 class="w3-text-black"><fmt:message key='menu.orderingSys'/></h1>
             <br>
             <p><a href="#menu" class="w3-button w3-large w3-black"><fmt:message key='menu.letMeSee'/></a></p>
+            <resources mapping="/images/**" location="/images/" /> 
         </header>
 
         <!-- Menu Container -->
@@ -99,7 +100,7 @@
                                             </c:if>
                                         </c:forEach>
                                         <c:if test="${count==0}"> 
-                                            <img src=""  style="width:85%">
+                                            <img src=" " alt=""/>
                                         </c:if>
                                         <h2><b class="w3-xlarge w3-text-brown">${menu.name}</b></h2>
                                         <i class="w3-small w3-text-dark_grey">${menu.description}</i><p></p>

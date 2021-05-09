@@ -23,6 +23,12 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     @Transactional
+    public List<Orders> getOrders(String username) {
+        return ordersRepo.findByusername(username);
+    }
+
+    @Override
+    @Transactional
     public Orders getOrder(long order_Id) {
         return ordersRepo.findById(order_Id).orElse(null);
     }

@@ -9,7 +9,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,9 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
-import ouhk.groupproject.dao.CommentRepository;
-import ouhk.groupproject.dao.OrdersRepository;
-import ouhk.groupproject.dao.WebUserRepository;
 import ouhk.groupproject.exception.AttachmentNotFound;
 import ouhk.groupproject.exception.CommentNotFound;
 import ouhk.groupproject.exception.MenuNotFound;
@@ -43,6 +39,7 @@ import ouhk.groupproject.service.CommentService;
 import ouhk.groupproject.service.OrderedFoodService;
 import ouhk.groupproject.view.DownloadingView;
 import ouhk.groupproject.service.OrdersService;
+import ouhk.groupproject.service.WebUserService;
 
 @Controller
 @RequestMapping("/menu")
@@ -63,14 +60,8 @@ public class MenuController {
     @Autowired
     private AttachmentService attachmentService;
 
-    @Resource
-    CommentRepository commentRepo;
-
-    @Resource
-    WebUserRepository webUserRepo;
-
-    @Resource
-    OrdersRepository ordersRepo;
+    @Autowired
+    private WebUserService webUserService;
 
     @GetMapping("")
     public String list(ModelMap model) {
@@ -181,7 +172,7 @@ public class MenuController {
         }
         model.addAttribute("images", images);
 
-        List<Comment> comments = commentService.getComment(food_Id);
+        List<Comment> comments = commentService.getComments(food_Id);
         model.addAttribute("comments", comments);
         model.addAttribute("menu", menu);
         return "view";
@@ -378,7 +369,7 @@ public class MenuController {
 
     @GetMapping("/viewcart/checkout")
     public ModelAndView checkout(ModelMap model, Principal principal) {
-        model.addAttribute("webUser", webUserRepo.findById(principal.getName()).orElse(null));
+        model.addAttribute("webUser", webUserService.getWebUser(principal.getName()));
         model.addAttribute("menus", menuService.getMenus());
         return new ModelAndView("checkout");
     }
@@ -418,23 +409,24 @@ public class MenuController {
     }
 
     @GetMapping("/vieworders")
-    public String vireorder(ModelMap model) {
-        model.addAttribute("orders", ordersService.getOrders());
+    public String vireorder(ModelMap model, Principal principal) {
+        model.addAttribute("orders", ordersService.getOrders(principal.getName()));
+        System.out.println(ordersService.getOrders(principal.getName()));
         return ("vieworder");
     }
 
     @GetMapping("/vieworders/order_information/order_id={order_id}")
-    public String vireorder_more(ModelMap model, @PathVariable("order_id") long order_id,  Principal principal, HttpServletRequest request
+    public String vireorder_more(ModelMap model, @PathVariable("order_id") long order_id, Principal principal, HttpServletRequest request
     ) {
-         Orders orders = ordersRepo.findById(order_id).orElse(null);
+        Orders orders = ordersService.getOrder(order_id);
         if (orders == null
                 || !((request.isUserInRole("ROLE_ADMIN"))
                 || (principal.getName() == null ? orders.getUsername() == null : principal.getName().equals(orders.getUsername())))) {
 
             return ("menu");
-        }              
-        
-        model.addAttribute("orders", ordersService.getOrder(order_id));
+        }
+
+        model.addAttribute("order", ordersService.getOrder(order_id));
         model.addAttribute("orderedfoods", orderedFoodService.getOrderedFoods(order_id));
         return ("order_information");
     }
@@ -474,7 +466,7 @@ public class MenuController {
             Principal principal,
             HttpServletRequest request) {
 
-        Comment comment = commentRepo.findById(id).orElse(null);
+        Comment comment = commentService.getComment(id);
         if (comment == null
                 || !((request.isUserInRole("ROLE_ADMIN"))
                 || (principal.getName() == null ? comment.getUsername() == null : principal.getName().equals(comment.getUsername())))) {
@@ -501,7 +493,7 @@ public class MenuController {
             @PathVariable("id") long id,
             HttpServletRequest request) throws IOException, CommentNotFound {
 
-        Comment comment = commentRepo.findById(id).orElse(null);
+        Comment comment = commentService.getComment(id);
         if (comment == null
                 || !((request.isUserInRole("ROLE_ADMIN"))
                 || (principal.getName() == null ? comment.getUsername() == null : principal.getName().equals(comment.getUsername())))) {
@@ -522,7 +514,7 @@ public class MenuController {
             @PathVariable("id") long id
     )
             throws CommentNotFound {
-        Comment comment = commentRepo.findById(id).orElse(null);
+        Comment comment = commentService.getComment(id);
         if (comment == null
                 || !((request.isUserInRole("ROLE_ADMIN"))
                 || (principal.getName() == null ? comment.getUsername() == null : principal.getName().equals(comment.getUsername())))) {

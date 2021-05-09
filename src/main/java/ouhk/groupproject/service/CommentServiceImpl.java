@@ -33,9 +33,16 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public List<Comment> getComment(long foodid) {
+    public List<Comment> getComments(long foodid) {
         return commentRepo.findByFoodid(foodid);
     }
+    
+        @Override
+    @Transactional
+    public Comment getComment(long commentid) {
+        return commentRepo.findById(commentid).orElse(null);
+    }
+    
 
     @Override
     @Transactional

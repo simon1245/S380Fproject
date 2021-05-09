@@ -102,26 +102,38 @@
                         </c:forEach>
                     </table>
                     <div  class="w3-row w3-border w3-border-brown w3-container w3-padding-32 ">
-                        <h3 >
-                            <table align="right" >
-                                <tr >
-                                    <td align="right">
-                                        <fmt:message key='viewcart.totalItem'/>
-                                    </td>
-                                    <td  align="center">
-                                        ${Total_qty} 
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td  align="right">
-                                        <fmt:message key='viewcart.bill'/>
-                                    </td>
-                                    <td align="center"> 
-                                        $${Total_bill}
-                                    </td>
-                                </tr>
-                            </table>
-                        </h3>
+
+                        <table align="right" >
+                            <tr >
+                                <th width="70%"></th>
+                                <th></th>
+                            </tr>
+                            <tr >
+                                <td  align="right">
+                                    <fmt:message key='viewcart.totalItem'/>
+                                </td>
+                                <td  align="center">
+                                    ${Total_qty} 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right" RowSpan="2">
+                                    <fmt:message key='viewcart.bill'/>
+                                </td>
+                                <td  align="center">
+                                    $${Total_bill}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  align="center">
+                                    <fmt:message key='viewcart.OrderTime:'/>
+                                </td>
+                                <td   align="center"> 
+                                    <fmt:formatDate pattern="hh:mm:ss dd-MM-yyyy" value="${order.order_time}" />
+
+                                </td>
+                            </tr>
+                        </table>
                     </div>     
                 </div>
                 <br>

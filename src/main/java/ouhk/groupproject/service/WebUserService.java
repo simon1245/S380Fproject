@@ -16,6 +16,7 @@ import ouhk.groupproject.model.WebUser;
 
 @Service
 public class WebUserService implements UserDetailsService {
+
     @Resource
     WebUserRepository webUserRepo;
 
@@ -32,4 +33,11 @@ public class WebUserService implements UserDetailsService {
         }
         return new User(webUser.getUsername(), webUser.getPassword(), authorities);
     }
+
+    public WebUser getWebUser(String username)
+            throws UsernameNotFoundException {
+        return webUserRepo.findById(username).orElse(null);
+        
+        }
+    
 }

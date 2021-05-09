@@ -77,7 +77,7 @@
                 <div class="w3-row w3-border w3-border-brown w3-container w3-padding-32">
 
                     <c:choose>
-                        <c:when test="${orders ==null}">
+                        <c:when test="${empty  orders}">
                             <h4 class="w3-center"><fmt:message key='vieworder.There is no order'/></h4>
                         </c:when>
                         <c:otherwise>
