@@ -127,9 +127,6 @@ public class WebUserController {
     @PostMapping("/Register")
     public String create(Model model, Form form) throws IOException {
         if (form.password == null ? form.confirm_password == null : !(form.password.equals(form.confirm_password))) {
-            System.out.println(form.password);
-            System.out.println("password");
-            System.out.println(form.confirm_password);
             form.password = "";
             form.confirm_password = "";
             form.error_msg = "Your password do not match with your comfirm password";
@@ -180,43 +177,20 @@ public class WebUserController {
 
         ModelAndView modelAndView = new ModelAndView("edit_user");
         Form Form = new Form();
-        if (!(principal.getName().equals(username)))
-        {
-            Form.setPassword(webUser.getPassword());
-            Form.setConfirm_password(webUser.getPassword());
-        }
-
+        Form.setPassword(webUser.getPassword().substring(6));
         Form.setUsername(webUser.getUsername());
         Form.setFull_name(webUser.getFull_name());
         Form.setPhone(webUser.getPhone());
         Form.setAddress(webUser.getAddress());
         modelAndView.addObject("webUser", Form);
 
-        request.getSession().setAttribute("user_name",webUser.getUsername());
-        
+        request.getSession().setAttribute("user_name", webUser.getUsername());
+
         return modelAndView;
     }
 
     @PostMapping("/edit_user/{username}")
     public String EditUser(Model model, Form form) throws IOException {
-        if (form.password == null ? form.confirm_password == null : !(form.password.equals(form.confirm_password))) {
-            System.out.println(form.password);
-            System.out.println("password");
-            System.out.println(form.confirm_password);
-            form.password = "";
-            form.confirm_password = "";
-            form.error_msg = "Your password do not match with your comfirm password";
-            model.addAttribute("webUser", form);
-            return "edit_user";
-        }
-        if (form.password.length() < 8) {
-            System.out.println("asdad");
-            form.password = "";
-            form.confirm_password = "";
-            form.error_msg = "Your password should have at least 8 characters ";
-            model.addAttribute("webUser", form);
-            return "edit_user";
-        }
         WebUser user = new WebUser(form.getUsername(),
                 form.getPassword(),
                 form.getRoles(),
@@ -234,5 +208,53 @@ public class WebUserController {
             }
         }
         return null;
+    }
+    
+    @GetMapping("/edit_user/passwordchange/{username}")
+    public ModelAndView passwordchange(@PathVariable("username") String username,
+            Principal principal, HttpServletRequest request) {
+        WebUser webUser = webUserRepo.findById(username).orElse(null);
+        if (webUser == null
+                || !((request.isUserInRole("ROLE_ADMIN")) || (principal.getName() == null ? username == null : principal.getName().equals(username)))) {
+            return new ModelAndView(new RedirectView("/menu", true));
+        }
+
+        ModelAndView modelAndView = new ModelAndView("passwordchange");
+        Form Form = new Form();
+        Form.setUsername(webUser.getUsername());
+        Form.setFull_name(webUser.getFull_name());
+        Form.setPhone(webUser.getPhone());
+        Form.setAddress(webUser.getAddress());
+        modelAndView.addObject("webUser", Form);
+
+        request.getSession().setAttribute("user_name", webUser.getUsername());
+
+        return modelAndView;
+    }
+    
+    @PostMapping("/edit_user/passwordchange/{username}")
+    public String passwordchange(Model model, Form form,@PathVariable("username") String username) throws IOException {
+        if (form.password == null ? form.confirm_password == null : !(form.password.equals(form.confirm_password))) {
+            form.password = "";
+            form.confirm_password = "";
+            form.error_msg = "Your password do not match with your comfirm password";
+            model.addAttribute("webUser", form);
+            return "passwordchange";
+        }
+        if (form.password.length() < 8) {
+            System.out.println("asdad");
+            form.password = "";
+            form.confirm_password = "";
+            form.error_msg = "Your password should have at least 8 characters ";
+            model.addAttribute("webUser", form);
+            return "passwordchange";
+        }
+        
+        WebUser webUser = webUserRepo.findById(username).orElse(null);
+        webUser.setPassword("{noop}"+form.password);
+
+        webUserRepo.save(webUser);
+                return "redirect:/user/edit_user/"+username;
+            
     }
 }

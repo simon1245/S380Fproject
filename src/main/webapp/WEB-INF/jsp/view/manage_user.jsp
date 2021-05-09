@@ -81,11 +81,17 @@
                         <c:otherwise>
                             <table class="w3-table w3-bordered w3-hoverable">
                                 <tr class="w3-large ">
-                                    <th><fmt:message key='manage.username'/></th><th><fmt:message key='manage.password'/></th><th><fmt:message key='manage.roles'/></th><th><fmt:message key='manage.action'/></th>
+                                    <th><fmt:message key='manage.username'/></th>
+                                    <th><fmt:message key='manage.fullname'/></th>
+                                    <th><fmt:message key='manage.phone'/></th>
+                                    <th><fmt:message key='manage.roles'/></th>
+                                    <th><fmt:message key='manage.action'/></th>
                                 </tr>
                                 <c:forEach items="${webUsers}" var="user">
                                     <tr>
-                                        <td>${user.username}</td><td>${user.password}</td>
+                                        <td>${user.username}</td>
+                                        <td>${user.full_name}</td>
+                                        <td>${user.phone}</td>
                                         <td>
                                             <c:forEach items="${user.roles}" var="role" varStatus="status">
                                                 <c:if test="${!status.first}">, </c:if>

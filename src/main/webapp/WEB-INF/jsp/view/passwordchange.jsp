@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
-    <title><fmt:message key='edit_user.titleHEAD'/>${menu.food_id} - <fmt:message key='create.title'/></title>
+    <title><fmt:message key='passwordchange.titleHEAD'/>${menu.food_id} - <fmt:message key='create.title'/></title>
     <style>
         body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
         .w3-bar-block .w3-bar-item {padding:20px}
@@ -57,7 +57,7 @@
         <!-- content-->
         <div class="w3-container w3-white w3-padding-64 w3-large" id="reg" >
             <div class="w3-content">
-                <h1 style="padding-top:20px"><fmt:message key='edit_user.edit_user'/></h1>
+                <h1 style="padding-top:20px"><fmt:message key='passwordchange.Passwordchange'/></h1>
                 <security:authorize access="!hasRole('ADMIN')">
                     <h4 style="margin-bottom:30px"><fmt:message key='register.descriptionHead'/> &nbsp<a href="<c:url value="/login" />"><fmt:message key='register.descriptionBody'/></a> &nbsp<fmt:message key='register.descriptionTail'/></h4>
                 </security:authorize>
@@ -67,25 +67,10 @@
                         <c:if test="${webUser.error_msg != null}">
                             Error Messages: ${webUser.error_msg}<br><br>
                         </c:if>
-                        <form:label path="username"  class="w3-large"><span class="star">*</span><fmt:message key='register.username'/>: </form:label><br/>
-                        <form:input type="text" path="username" readonly="true"  required="required"  class="w3-input" style="width:70%"  /><br/><br/>
-                        <form:label path="password"  class="w3-large"><span class="star">*</span><fmt:message key='register.password'/>:</form:label><br/>
-                        <form:input type="password"  path="password" readonly="true" required="required"   placeholder="Please input at least 8 character password" class="w3-input" style="width:70%"  />
-                        <u><a href="<c:url value="/user/edit_user/passwordchange/${webUser.username}" />" ><fmt:message key='ChangePassword'/></a></u><br/><br/> 
-                        <form:label path="full_name"  class="w3-large"><span class="star">*</span><fmt:message key='register.full_name'/>:</form:label><br/>
-                        <form:input type="text"  path="full_name"  required="required" placeholder="Please enter your fullname"  class="w3-input" style="width:70%"   /><br/><br/>
-                        <form:label path="phone"  class="w3-large"><span class="star">*</span><fmt:message key='register.phone'/>:</form:label><br/>
-                        <form:input type="tel"  path="phone"  required="required" pattern="^\d{8}$" placeholder="Please enter an 8-digit number"   class="w3-input" style="width:70%"   /><br/><br/>
-                        <form:label path="address"  class="w3-large"><span class="star">*</span><fmt:message key='register.address'/>:</form:label><br/>
-                        <form:input type="text"  path="address"  required="required" placeholder="Please enter a valid address"  class="w3-input" style="width:70%"  /><br/><br/>
-                        <security:authorize access="hasRole('ADMIN')">
-                            <form:label path="roles" class="w3-large"><fmt:message key='register.roles'/>:</form:label><br/>
-                            <form:checkbox path="roles" value="ROLE_USER" checked="true" class="w3-check"/><fmt:message key='register.role_user'/>
-                            <form:checkbox path="roles" value="ROLE_ADMIN"  class="w3-check" style="margin-left:10px"/><fmt:message key='register.role_admin'/>
-                        </security:authorize>   
-                        <security:authorize access="!hasRole('ADMIN')">
-                            <form:checkbox style="display:none" path="roles" value="ROLE_USER" checked="true"   class="w3-check"/>
-                        </security:authorize>
+                        <form:label path="password"  class="w3-large"><span class="star">*</span><fmt:message key='register.password'/>: </form:label><br/>
+                        <form:input type="password" path="password"   required="required"  class="w3-input" style="width:70%"  /><br/><br/>
+                        <form:label path="confirm_password"  class="w3-large"><span class="star">*</span><fmt:message key='register.confirm_password'/>:</form:label><br/>
+                        <form:input type="password"  path="confirm_password"  required="required"   placeholder="Please input at least 8 character password" class="w3-input" style="width:70%"  /><br/><br/> 
 
                         <br /><br />
                         <input type="submit" value="<fmt:message key='register.update'/>" class="w3-btn w3-left w3-round-large" style="background-color:#cbbeb5;width: 150px"/><br>

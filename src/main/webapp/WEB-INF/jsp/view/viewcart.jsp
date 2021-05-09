@@ -94,8 +94,9 @@
                                     <th class="w3-center">
                                         <fmt:message key='viewcart.quantity'/></th>
                                     <th class="w3-center"><fmt:message key='viewcart.price'/>  </th>
-                                    
+
                                     <th class="w3-center"><fmt:message key='viewcart.subtotal'/></th>
+                                    <th class="w3-center"> </th>
                                 </tr>
                                 <c:forEach items="${carts}" var="cart">
                                     <tr>
@@ -108,15 +109,15 @@
                                                 <td width="40%">${menu.name}   </td>
                                                 <td width="20%" class="w3-center">
                                                     <a href="<c:url value="/menu/minustoCart"><c:param name="food_Id" value="${menu.food_id}" /></c:url>"><fmt:message key='menu.minus'/></a>
-                                                    ${cart.value} 
+                                                    <c:out value="${cart.value}" /> 
                                                     <a href="<c:url value="/menu/addtoCart"><c:param name="food_Id" value="${menu.food_id}" /></c:url>"><fmt:message key='menu.add'/></a>
-                                                    <br><a href="<c:url value="/menu/removefromCart"><c:param name="food_Id" value="${menu.food_id}" /></c:url>"><fmt:message key='viewcart.remove'/>
-                                                    
-                                                <td width="20%" class="w3-center">$${menu.price}  </td>
+                                                    </td>
+
+                                                    <td width="10%" class="w3-center">$${menu.price}  </td>
                                                 <td width="20%" class="w3-center">$${SubTotal}  </td>
-                                                <td class="w3-center"></td>
-                                            </c:if>
-                                        </c:forEach>
+                                                <td  width="10%" class="w3-center"><br><a href="<c:url value="/menu/removefromCart" ><c:param name="food_Id" value="${menu.food_id}" /></c:url>"><fmt:message key='viewcart.remove'/></td>
+                                                </c:if>
+                                            </c:forEach>
 
                                     </tr>
                                 </c:forEach>
