@@ -27,15 +27,25 @@
     
     <http auto-config="true">
         
-        <intercept-url pattern="/menu/create/**" access="hasRole('ADMIN')" /> 
+        <intercept-url pattern="/menu/manage_menu/" access="hasRole('ADMIN')" /> 
+        <intercept-url pattern="/menu/create_menu/" access="hasRole('ADMIN')" /> 
         <intercept-url pattern="/menu/delete/**" access="hasRole('ADMIN')" /> 
-        <intercept-url pattern="/menu/edit/**" access="hasRole('ADMIN')" /> 
+        <intercept-url pattern="/menu/edit_menu/**" access="hasRole('ADMIN')" /> 
         <intercept-url pattern="/menu/addtoCart/**" access="hasRole('USER') or hasRole('ADMIN') " /> 
+        <intercept-url pattern="/menu/minustoCart/**" access="hasRole('USER') or hasRole('ADMIN') " /> 
         <intercept-url pattern="/menu/emptycart/**" access="hasRole('USER' )or hasRole('ADMIN') " /> 
+        <intercept-url pattern="/menu/removefromCart/**" access="hasRole('USER' )or hasRole('ADMIN') " /> 
+        <intercept-url pattern="/menu/viewcart/**" access="hasRole('USER') or hasRole('ADMIN') " /> 
+        <intercept-url pattern="/menu/vieworders/**" access="hasRole('USER') or hasRole('ADMIN') " /> 
         <intercept-url pattern="/menu/viewcart/**" access="hasRole('USER') or hasRole('ADMIN') " /> 
         <intercept-url pattern="/menu/make_comment/**" access="hasRole('USER') or hasRole('ADMIN') " /> 
-        <intercept-url pattern="/user/manage/**" access="hasRole('ADMIN')" /> 
+        <intercept-url pattern="/menu/edit_comment/**" access="hasRole('USER') or hasRole('ADMIN') " /> 
+        <intercept-url pattern="/menu/edit_comment/**" access="hasRole('USER') or hasRole('ADMIN') " /> 
+        <intercept-url pattern="/menu/delete_comment/**" access="hasRole('ADMIN') " /> 
+                       
+        <intercept-url pattern="/user/manage_user/**" access="hasRole('ADMIN')" /> 
         <intercept-url pattern="/user/delete/**" access="hasRole('ADMIN')" /> 
+        <intercept-url pattern="/user/edit_user/**" access="hasRole('ADMIN')" /> 
         
         <form-login login-page="/login" authentication-failure-url="/login?error" />
         <logout logout-success-url="/login?logout"

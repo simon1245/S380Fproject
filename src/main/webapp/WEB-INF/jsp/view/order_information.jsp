@@ -32,6 +32,7 @@
                             </a>
                         </security:authorize>
                         <a href="<c:url value="/menu/viewcart" />" class="w3-bar-item w3-button w3-right w3-medium"><fmt:message key='viewCart'/></a>
+                        <a href="<c:url value="/menu/vieworders" />" class="w3-bar-item w3-button w3-right w3-medium"><fmt:message key='viewOrder'/></a>
                         <security:authorize access="hasRole('ADMIN')">
                             <a href="<c:url value="/user/manage_user" />"class="w3-bar-item w3-button w3-right w3-medium"><fmt:message key='manageUser'/></a>
                             <a href="<c:url value="/menu/manage_menu" />"class="w3-bar-item w3-button w3-right w3-medium"><fmt:message key='manageMenu'/></a>
@@ -75,7 +76,6 @@
                 </div>
                 <br>
                 <div class="w3-row w3-border w3-border-brown w3-container w3-padding-32">
-
                     <c:set var="Total_bill" value="0" />
                     <c:set var="Total_qty" value="0" />
                     <table class="w3-table w3-bordered w3-hoverable">
@@ -87,8 +87,6 @@
 
                             <th class="w3-center"><fmt:message key='viewcart.subtotal'/></th>
                         </tr>
-
-
                         <c:forEach items="${orderedfoods}" var="orderedfood">
                             <tr>
                                 <c:set var="SubTotal" value="0" />
@@ -102,9 +100,6 @@
                                 <td width="20%" class="w3-center">$${SubTotal}  </td>
                             </tr>
                         </c:forEach>
-
-
-
                     </table>
                     <div  class="w3-row w3-border w3-border-brown w3-container w3-padding-32 ">
                         <h3 >

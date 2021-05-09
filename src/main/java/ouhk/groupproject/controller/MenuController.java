@@ -424,8 +424,16 @@ public class MenuController {
     }
 
     @GetMapping("/vieworders/order_information/order_id={order_id}")
-    public String vireorder_more(ModelMap model, @PathVariable("order_id") long order_id
+    public String vireorder_more(ModelMap model, @PathVariable("order_id") long order_id,  Principal principal, HttpServletRequest request
     ) {
+         Orders orders = ordersRepo.findById(order_id).orElse(null);
+        if (orders == null
+                || !((request.isUserInRole("ROLE_ADMIN"))
+                || (principal.getName() == null ? orders.getUsername() == null : principal.getName().equals(orders.getUsername())))) {
+
+            return ("menu");
+        }              
+        
         model.addAttribute("orders", ordersService.getOrder(order_id));
         model.addAttribute("orderedfoods", orderedFoodService.getOrderedFoods(order_id));
         return ("order_information");
