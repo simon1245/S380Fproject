@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
-    <title><fmt:message key='edit_user.titleHEAD'/>${menu.food_id} - <fmt:message key='create.title'/></title>
+    <title><fmt:message key='manage.edit_user'/>${menu.food_id} - <fmt:message key='create.title'/></title>
     <style>
         body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
         .w3-bar-block .w3-bar-item {padding:20px}
@@ -57,7 +57,7 @@
         <!-- content-->
         <div class="w3-container w3-white w3-padding-64 w3-large" id="reg" >
             <div class="w3-content">
-                <h1 style="padding-top:20px"><fmt:message key='edit_user.edit_user'/></h1>
+                <h1 style="padding-top:20px"><fmt:message key='manage.edit_user'/></h1>
                 <security:authorize access="!hasRole('ADMIN')">
                     <h4 style="margin-bottom:30px"><fmt:message key='register.descriptionHead'/> &nbsp<a href="<c:url value="/login" />"><fmt:message key='register.descriptionBody'/></a> &nbsp<fmt:message key='register.descriptionTail'/></h4>
                 </security:authorize>
